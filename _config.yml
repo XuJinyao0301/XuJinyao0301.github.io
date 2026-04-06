@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 尧的博客
-subtitle: '记录一下自己的computer science的学习点滴'
-description: ''
-keywords:
-author: XuJinyao
+title: Xu Jinyao
+subtitle: 'Network Engineering Undergraduate | Learning C++, CS, ML and Systems'
+description: 'A personal blog about C++, computer science, machine learning, and growth.'
+keywords: C++, Computer Science, Machine Learning, Hexo, Blog
+author: Xu Jinyao
 language: zh-CN
 timezone: 'Asia/Shanghai'
 

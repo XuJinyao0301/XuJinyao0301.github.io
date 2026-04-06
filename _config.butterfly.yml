@@ -18,14 +18,13 @@ nav:
   fixed: false
 
 menu:
-  # Home: / || fas fa-home
-  # List||fas fa-list:
-  #   Music: /music/ || fas fa-music
-  #   Movie: /movies/ || fas fa-video
-
-# --------------------------------------
-# Code Blocks Settings
-# --------------------------------------
+  Home: / || fas fa-home
+  Categories: /categories/ || fas fa-folder-open
+  Tags: /tags/ || fas fa-tags
+  Projects: /projects/ || fas fa-laptop-code
+  About: /about/ || fas fa-user
+  Archives: /archives/ || fas fa-archive
+  Now: /now/ || fas fa-clock
 
 code_blocks:
   # Code block theme: darker / pale night / light / ocean / false
@@ -46,9 +45,8 @@ code_blocks:
 # Formal:
 #   icon: link || the description || color
 social:
-  # fab fa-github: https://github.com/xxxxx || Github || '#24292e'
-  # fas fa-envelope: mailto:xxxxxx@gmail.com || Email || '#4a7dbe'
-
+  fab fa-github: https://github.com/XuJinyao0301 || GitHub || '#24292e'
+  fas fa-envelope: mailto:xu_jinyao@outlook.com || Email || '#4a7dbe'
 # --------------------------------------
 # Image Settings
 # --------------------------------------
@@ -56,19 +54,17 @@ social:
 favicon: /img/favicon.png
 
 avatar:
-  img: /images/avatar.png
-  shape: circle
-  size: 120px
+  img: /img/avatar.png
   effect: false
 
 # Disable all banner images
-disable_top_img: false
+disable_top_img: true
 
 # If the banner of page not setting, it will show the default_top_img
-default_top_img:
+default_top_img: false
 
 # The banner image of index page
-index_img:
+index_img: false
 
 # The banner image of archive page
 archive_img:
@@ -94,7 +90,7 @@ footer_img: false
 
 # Website Background
 # Can set it to color or image url
-background:
+background: '#05070d'
 
 cover:
   # Disable the cover or not
@@ -150,22 +146,12 @@ index_top_img_height:
 
 # The subtitle on homepage
 subtitle:
-  enable: false
-  # Typewriter Effect
-  effect: true
-  # Customize typed.js
-  # https://github.com/mattboldt/typed.js/#customization
+  enable: true
+  effect: false
   typed_option:
-  # Source - Call the third-party service API (Chinese only)
-  # It will show the source first, then show the content of sub
-  # Choose: false/1/2/3
-  # false - disable the function
-  # 1 - hitokoto.cn
-  # 2 - https://api.aa1.cn/doc/yiyan.html
-  # 3 - jinrishici.com
   source: false
-  # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
+    - Network Engineering Undergraduate | Learning C++, CS, ML and Systems
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
@@ -183,9 +169,9 @@ index_layout: 3
 # 3: auto_excerpt (default)
 # false: do not show the article introduction
 index_post_content:
-  method: 3
+  method: 2
   # If you set method to 2 or 3, the length need to config
-  length: 500
+  length: 120
 
 # --------------------------------------
 # Post Settings
@@ -285,17 +271,17 @@ aside:
     category: true
   card_author:
     enable: true
-    description:
+    description: Learning C++, CS, ML and Systems
     button:
-      enable: true
+      enable: false
       icon: fab fa-github
       text: Follow Me
       link: https://github.com/xxxxxx
   card_announcement:
-    enable: true
-    content: This is my Blog
+    enable: false
+    content: 欢迎访问我的个人博客！！
   card_recent_post:
-    enable: true
+    enable: false
     # If set 0 will show all
     limit: 5
     # Sort: date / updated
@@ -345,7 +331,7 @@ aside:
     # Sort of order. 1, asc for ascending; -1, desc for descending
     order: -1
   card_webinfo:
-    enable: true
+    enable: false
     post_count: true
     last_push_date: true
     sort_order:
@@ -453,9 +439,9 @@ busuanzi:
 math:
   # Choose: mathjax, katex
   # Leave it empty if you don't need math
-  use:
+  use: mathjax
   per_page: true
-  hide_scrollbar: false
+  hide_scrollbar: true
 
   mathjax:
     # Enable the contextual menu
@@ -820,15 +806,14 @@ beautify:
 # Global font settings
 # Don't modify the following settings unless you know how they work
 font:
-  global_font_size:
-  code_font_size:
-  font_family:
-  code_font_family:
+  global-font-size: 16px
+  code-font-size:
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft JhengHei", "Microsoft YaHei", sans-serif
+  code-font-family: '"SFMono-Regular", Menlo, Consolas, "PingFang SC", "Microsoft YaHei", monospace'
 
-# Font settings for the site title and site subtitle
 blog_title_font:
   font_link:
-  font_family:
+  font-family: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
 
 # The setting of divider icon
 hr_icon:
@@ -1054,7 +1039,7 @@ css_prefix: true
 # Insert the code to head (before '</head>' tag) and the bottom (before '</body>' tag)
 inject:
   head:
-    # - <link rel="stylesheet" href="/xxx.css">
+    - <link rel="stylesheet" href="/self.css">
   bottom:
     # - <script src="xxxx"></script>
 
