@@ -8,7 +8,7 @@ tags:
 categories:
 - Programming
 description: 
-- 这篇文章讲解了CS106L在Lecture2里讲到的Stream
+- 这篇文章主要记录了CS106L在Lecture2里讲到的Stream
 ---
 ## 什么是Stream
 
