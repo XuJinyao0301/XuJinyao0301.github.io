@@ -163,7 +163,7 @@ reply：ttl=52
 
 ## Day 4
 
-### 1. 读取 pcap 文件
+### 读取 pcap 文件
 
 ```python
 from scapy.all import rdpcap
