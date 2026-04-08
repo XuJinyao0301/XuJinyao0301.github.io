@@ -1,0 +1,146 @@
+#home-resume-panel(data-resume-lang='zh')
+  .resume-lang-switch(role='tablist' aria-label='Resume Language Switch')
+    button.resume-lang-btn.is-active(type='button' data-lang='zh' aria-pressed='true') 中文
+    button.resume-lang-btn(type='button' data-lang='en' aria-pressed='false') EN
+
+  .resume-lang(data-lang='zh')
+    .resume-hero
+      p.resume-hero__eyebrow Resume Snapshot
+      h2.resume-hero__title 面试展示区（可直接替换内容）
+      p.resume-hero__desc
+        | 用这一块快速展示你的教育背景、项目经验和工程能力。
+        | 下方内容已是框架模板，你只需要把占位符替换成真实信息。
+      .resume-hero__actions
+        a.resume-hero__btn(href=url_for('/about/')) 查看完整个人介绍
+        a.resume-hero__btn.resume-hero__btn--ghost(href=url_for('/projects/')) 查看项目页
+
+    .resume-grid
+      article.resume-card
+        h3.resume-card__title 教育经历
+        ul.resume-card__list
+          li
+            .resume-item__title [武汉科技大学] · [网络工程]
+            p.resume-item__meta [2025] - [2029] · [GPA/排名/方向（可选）]
+            p.resume-item__text
+              | 主修课程：[课程1] / [课程2] / [课程3]。
+              | 研究兴趣：[方向A]、[方向B]。
+          li
+            .resume-item__title [交换/辅修/训练营（可选）]
+            p.resume-item__meta [时间] · [项目名称]
+            p.resume-item__text [这里写最有价值的一条收获或成果]
+
+      article.resume-card
+        h3.resume-card__title 精选项目（建议保留 2-3 个）
+        ul.resume-card__list
+          li
+            .resume-item__title [项目名称 1]
+            p.resume-item__meta [技术栈] · [你的角色]
+            p.resume-item__text
+              | 你解决了什么问题：[一句话场景]。
+              | 核心成果：[性能提升xx% / 准确率xx / 完成xx功能]。
+          li
+            .resume-item__title [项目名称 2]
+            p.resume-item__meta [技术栈] · [你的角色]
+            p.resume-item__text [这里写能体现工程能力的关键结果]
+          li
+            .resume-item__title [项目名称 3（可选）]
+            p.resume-item__meta [技术栈] · [你的角色]
+            p.resume-item__text [这里写项目亮点]
+
+      article.resume-card
+        h3.resume-card__title 技能与亮点
+        ul.resume-card__list
+          li
+            .resume-item__title 技术栈
+            p.resume-item__text [语言] / [框架] / [工具链] / [部署]
+          li
+            .resume-item__title 工程能力
+            p.resume-item__text [系统设计] / [性能优化] / [测试与 CI/CD] / [文档协作]
+          li
+            .resume-item__title 竞赛 / 奖项 / 证书（可选）
+            p.resume-item__text [奖项名称] · [时间] · [含金量一句话说明]
+
+  .resume-lang(data-lang='en' hidden)
+    .resume-hero
+      p.resume-hero__eyebrow Resume Snapshot
+      h2.resume-hero__title Interview Showcase (Template Only)
+      p.resume-hero__desc
+        | Use this area to quickly present your education, project experience, and engineering strengths.
+        | The sections below are placeholders so you can replace them with your own content.
+      .resume-hero__actions
+        a.resume-hero__btn(href=url_for('/about/')) View Full Profile
+        a.resume-hero__btn.resume-hero__btn--ghost(href=url_for('/projects/')) View Projects
+
+    .resume-grid
+      article.resume-card
+        h3.resume-card__title Education
+        ul.resume-card__list
+          li
+            .resume-item__title [University Name] · [Degree / Major]
+            p.resume-item__meta [Start Date] - [End Date] · [GPA / Rank / Focus (Optional)]
+            p.resume-item__text
+              | Core coursework: [Course 1] / [Course 2] / [Course 3].
+              | Interests: [Area A], [Area B].
+          li
+            .resume-item__title [Exchange / Minor / Program (Optional)]
+            p.resume-item__meta [Date] · [Program Name]
+            p.resume-item__text [Write one high-impact takeaway here]
+
+      article.resume-card
+        h3.resume-card__title Selected Projects (2-3 Recommended)
+        ul.resume-card__list
+          li
+            .resume-item__title [Project Name 1]
+            p.resume-item__meta [Tech Stack] · [Your Role]
+            p.resume-item__text
+              | Problem solved: [One-line context].
+              | Outcome: [Latency -xx% / Accuracy xx / Delivered xx feature].
+          li
+            .resume-item__title [Project Name 2]
+            p.resume-item__meta [Tech Stack] · [Your Role]
+            p.resume-item__text [Write a result that demonstrates engineering depth]
+          li
+            .resume-item__title [Project Name 3 (Optional)]
+            p.resume-item__meta [Tech Stack] · [Your Role]
+            p.resume-item__text [Write the strongest highlight]
+
+      article.resume-card
+        h3.resume-card__title Skills & Highlights
+        ul.resume-card__list
+          li
+            .resume-item__title Technical Stack
+            p.resume-item__text [Languages] / [Frameworks] / [Tooling] / [Deployment]
+          li
+            .resume-item__title Engineering Capabilities
+            p.resume-item__text [System Design] / [Performance Tuning] / [Testing & CI/CD] / [Documentation]
+          li
+            .resume-item__title Awards / Certifications (Optional)
+            p.resume-item__text [Award Name] · [Date] · [One-line significance]
+
+  script.
+    (() => {
+      const panel = document.getElementById('home-resume-panel')
+      if (!panel || panel.dataset.langBound === 'true') return
+      panel.dataset.langBound = 'true'
+
+      const buttons = panel.querySelectorAll('.resume-lang-btn')
+      const blocks = panel.querySelectorAll('.resume-lang')
+
+      const setLang = (lang) => {
+        panel.setAttribute('data-resume-lang', lang)
+        buttons.forEach((button) => {
+          const active = button.dataset.lang === lang
+          button.classList.toggle('is-active', active)
+          button.setAttribute('aria-pressed', active ? 'true' : 'false')
+        })
+        blocks.forEach((block) => {
+          block.hidden = block.dataset.lang !== lang
+        })
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => setLang(button.dataset.lang))
+      })
+
+      setLang(panel.getAttribute('data-resume-lang') || 'zh')
+    })()

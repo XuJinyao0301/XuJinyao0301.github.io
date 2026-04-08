@@ -15,7 +15,7 @@ nav:
   display_title: true
   display_post_title: true
   # Whether to fix navigation bar
-  fixed: false
+  fixed: true
 
 menu:
   Home: / || fas fa-home
@@ -28,8 +28,8 @@ menu:
 
 code_blocks:
   # Code block theme: darker / pale night / light / ocean / false
-  theme: light
-  macStyle: false
+  theme: darker
+  macStyle: true
   # Code block height limit (unit: px)
   height_limit: false
   word_wrap: false
@@ -90,7 +90,7 @@ footer_img: false
 
 # Website Background
 # Can set it to color or image url
-background: '#05070d'
+background: '#070b16'
 
 cover:
   # Disable the cover or not
@@ -151,7 +151,7 @@ subtitle:
   typed_option:
   source: false
   sub:
-    - Network Engineering Undergraduate | Learning C++, CS, ML and Systems
+    - CS | Systems | ML · Build in Public, Think in Depth
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
@@ -161,7 +161,7 @@ subtitle:
 # 5: Info displayed on the cover
 # 6: Masonry layout - Cover on top, info on the bottom
 # 7: Masonry layout - Info displayed on the cover
-index_layout: 3
+index_layout: 1
 
 # Display the article introduction on homepage
 # 1: description
@@ -171,7 +171,7 @@ index_layout: 3
 index_post_content:
   method: 2
   # If you set method to 2 or 3, the length need to config
-  length: 120
+  length: 110
 
 # --------------------------------------
 # Post Settings
@@ -271,7 +271,7 @@ aside:
     category: true
   card_author:
     enable: true
-    description: Learning C++, CS, ML and Systems
+    description: Engineering undergraduate focused on systems and machine learning.
     button:
       enable: false
       icon: fab fa-github
@@ -281,7 +281,7 @@ aside:
     enable: false
     content: 欢迎访问我的个人博客！！
   card_recent_post:
-    enable: false
+    enable: true
     # If set 0 will show all
     limit: 5
     # Sort: date / updated
@@ -307,7 +307,7 @@ aside:
     limit: 40
     color: false
     # Order of tags, random/name/length
-    orderby: random
+    orderby: name
     # Sort of order. 1, asc for ascending; -1, desc for descending
     order: 1
     sort_order:
@@ -362,13 +362,13 @@ translate:
   msgToSimplifiedChinese: '簡'
 
 # Read Mode
-readmode: true
+readmode: false
 
 # Dark Mode
 darkmode:
-  enable: true
+  enable: false
   # Toggle Button to switch dark/light mode
-  button: true
+  button: false
   # Switch dark/light mode automatically
   # autoChangeMode: 1  Following System Settings, if the system doesn't support dark mode, it will switch dark mode between 6 pm to 6 am
   # autoChangeMode: 2  Switch dark mode between 6 pm to 6 am
@@ -379,7 +379,7 @@ darkmode:
   end:
 
 # Show scroll percent in scroll-to-top button
-rightside_scroll_percent: false
+rightside_scroll_percent: true
 
 # Don't modify the following settings unless you know how they work
 # Choose: readmode,translate,darkmode,hideAside,toc,chat,comment
@@ -392,7 +392,7 @@ rightside_item_order:
   show:
 
 # Animation for the bottom right config button
-rightside_config_animation: true
+rightside_config_animation: false
 
 # --------------------------------------
 # Global Settings
@@ -767,15 +767,15 @@ category_ui:
 tag_ui:
 
 # Rounded corners for UI elements
-rounded_corners_ui: true
+rounded_corners_ui: false
 
 # Stretches the lines so that each line has equal width
 text_align_justify: false
 
 # Add a mask to the header and footer
 mask:
-  header: true
-  footer: true
+  header: false
+  footer: false
 
 # Loading Animation
 preloader:
@@ -788,10 +788,10 @@ preloader:
   pace_css_url:
 
 # Page Transition
-enter_transitions: true
+enter_transitions: false
 
 # Default display mode - light (default) / dark
-display_mode: light
+display_mode: dark
 
 # Configuration for beautifying the content of the article
 beautify:
@@ -808,12 +808,12 @@ beautify:
 font:
   global-font-size: 16px
   code-font-size:
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft JhengHei", "Microsoft YaHei", sans-serif
-  code-font-family: '"SFMono-Regular", Menlo, Consolas, "PingFang SC", "Microsoft YaHei", monospace'
+  font-family: '"Manrope", "IBM Plex Sans SC", "Avenir Next", "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
+  code-font-family: '"JetBrains Mono", "SFMono-Regular", Menlo, Consolas, "PingFang SC", "Microsoft YaHei", monospace'
 
 blog_title_font:
   font_link:
-  font-family: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
+  font-family: '"Manrope", "IBM Plex Sans SC", "Avenir Next", "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif'
 
 # The setting of divider icon
 hr_icon:
@@ -1039,6 +1039,9 @@ css_prefix: true
 # Insert the code to head (before '</head>' tag) and the bottom (before '</body>' tag)
 inject:
   head:
+    - <link rel="preconnect" href="https://fonts.googleapis.com">
+    - <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    - <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
     - <link rel="stylesheet" href="/self.css">
   bottom:
     # - <script src="xxxx"></script>
