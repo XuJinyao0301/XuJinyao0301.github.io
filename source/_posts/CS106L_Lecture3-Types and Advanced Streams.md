@@ -11,7 +11,7 @@ description:
 - 这篇文章主要记录了CS106L在Lecture3里讲到的 Types and Advanced Streams
 ---
 ## cin 的读取
-![](/image/cs106l_lec3-01.jpg)
+![](/images/cs106l_lec3-01.jpg)
 
 我们可以看到，当我们输入 Avery Wang 时，
 在 cin 的缓冲区里，只有 Avery 被读走了，后面还剩 Wang\n
