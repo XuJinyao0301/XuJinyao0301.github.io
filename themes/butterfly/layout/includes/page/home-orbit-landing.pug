@@ -1,0 +1,158 @@
+section#orb-landing
+  .orb-shell
+    .orb-copy
+      p.orb-kicker Mission Control
+      h1.orb-title 让技术思考像轨道一样持续运行
+      p.orb-desc
+        | 这里是 Xu Jinyao 的工程博客。
+        br
+        | 记录算法、系统、AI 学习与项目实作，用长期主义构建自己的技术坐标系。
+      .orb-actions
+        a.orb-btn(href=url_for('/about/')) Enter About
+        a.orb-btn.orb-btn--ghost(href=url_for('/')) Explore Posts
+
+    .orb-stage
+      .earth-wrap(aria-hidden='true')
+        .earth-parallax
+          .earth-glow
+          .earth-atmosphere
+          .earth-core
+            span.continent.c1
+            span.continent.c2
+            span.continent.c3
+          .earth-clouds
+          .earth-aurora
+          .orbit-ring.r1
+          .orbit-ring.r2
+          .orbit-ring.r3
+
+  .orb-tools#orb-tools(data-angle='0')
+    p.orb-tools__hint 拖拽这个轨道环旋转，选择你要去的区域
+    .orb-tools__track
+      a.orb-tool(href=url_for('/') data-angle='0')
+        span.orb-tool__label Blog
+      a.orb-tool(href=url_for('/projects/') data-angle='60')
+        span.orb-tool__label Projects
+      a.orb-tool(href=url_for('/about/') data-angle='120')
+        span.orb-tool__label About
+      a.orb-tool(href=url_for('/tags/') data-angle='180')
+        span.orb-tool__label Tags
+      a.orb-tool(href=url_for('/categories/') data-angle='240')
+        span.orb-tool__label Categories
+      a.orb-tool(href=url_for('/now/') data-angle='300')
+        span.orb-tool__label Now
+
+  script.
+    (() => {
+      const earthWrap = document.querySelector('.earth-wrap')
+      if (earthWrap && earthWrap.dataset.bound !== 'true') {
+        earthWrap.dataset.bound = 'true'
+        let earthRaf = null
+
+        const resetEarth = () => {
+          earthWrap.style.setProperty('--tilt-x', '0deg')
+          earthWrap.style.setProperty('--tilt-y', '0deg')
+          earthWrap.style.setProperty('--glow-x', '50%')
+          earthWrap.style.setProperty('--glow-y', '50%')
+        }
+
+        const updateEarth = (event) => {
+          const rect = earthWrap.getBoundingClientRect()
+          const px = event.clientX - rect.left
+          const py = event.clientY - rect.top
+          const nx = Math.max(-1, Math.min(1, (px / rect.width - 0.5) * 2))
+          const ny = Math.max(-1, Math.min(1, (py / rect.height - 0.5) * 2))
+
+          earthWrap.style.setProperty('--tilt-x', `${(-ny * 9).toFixed(2)}deg`)
+          earthWrap.style.setProperty('--tilt-y', `${(nx * 12).toFixed(2)}deg`)
+          earthWrap.style.setProperty('--glow-x', `${(50 + nx * 18).toFixed(1)}%`)
+          earthWrap.style.setProperty('--glow-y', `${(50 + ny * 18).toFixed(1)}%`)
+        }
+
+        earthWrap.addEventListener('mousemove', (event) => {
+          if (earthRaf) return
+          earthRaf = requestAnimationFrame(() => {
+            updateEarth(event)
+            earthRaf = null
+          })
+        })
+
+        earthWrap.addEventListener('mouseleave', resetEarth)
+        resetEarth()
+      }
+
+      const toolsRoot = document.getElementById('orb-tools')
+      if (!toolsRoot || toolsRoot.dataset.bound === 'true') return
+      toolsRoot.dataset.bound = 'true'
+
+      const track = toolsRoot.querySelector('.orb-tools__track')
+      const tools = [...toolsRoot.querySelectorAll('.orb-tool')]
+      let dragging = false
+      let startPointerAngle = 0
+      let startRotation = 0
+      let rotation = 0
+      let rafId = null
+
+      const getCenter = () => {
+        const rect = track.getBoundingClientRect()
+        return {
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2
+        }
+      }
+
+      const pointerToAngle = (event) => {
+        const p = event.touches ? event.touches[0] : event
+        const center = getCenter()
+        return Math.atan2(p.clientY - center.y, p.clientX - center.x) * 180 / Math.PI
+      }
+
+      const normalize = (deg) => {
+        let v = deg % 360
+        if (v < 0) v += 360
+        return v
+      }
+
+      const render = () => {
+        toolsRoot.style.setProperty('--orbital-angle', `${rotation}deg`)
+      }
+
+      const onMove = (event) => {
+        if (!dragging) return
+        if (event.cancelable) event.preventDefault()
+        const nextAngle = pointerToAngle(event)
+        rotation = startRotation + (nextAngle - startPointerAngle)
+        if (rafId) return
+        rafId = requestAnimationFrame(() => {
+          render()
+          rafId = null
+        })
+      }
+
+      const onEnd = () => {
+        dragging = false
+        toolsRoot.classList.remove('is-dragging')
+        toolsRoot.dataset.angle = `${normalize(rotation).toFixed(1)}`
+      }
+
+      const onStart = (event) => {
+        if (event.target.closest('a')) return
+        dragging = true
+        startPointerAngle = pointerToAngle(event)
+        startRotation = rotation
+        toolsRoot.classList.add('is-dragging')
+      }
+
+      tools.forEach((tool) => {
+        tool.style.setProperty('--item-angle', `${tool.dataset.angle || 0}deg`)
+      })
+
+      track.addEventListener('mousedown', onStart)
+      track.addEventListener('touchstart', onStart, { passive: true })
+      window.addEventListener('mousemove', onMove, { passive: false })
+      window.addEventListener('touchmove', onMove, { passive: false })
+      window.addEventListener('mouseup', onEnd)
+      window.addEventListener('touchend', onEnd)
+
+      render()
+    })()

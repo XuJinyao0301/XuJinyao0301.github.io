@@ -1,0 +1,229 @@
+section#welcome-home
+  script.
+    (() => {
+      document.body.classList.add('welcome-mode')
+    })()
+
+  section#welcome-hero
+    .welcome-hero-bg
+
+    .welcome-earth-wrap(aria-hidden='true')
+      .welcome-earth-glow
+      .welcome-earth
+        img(src=url_for('/images/pinterest-earth.jpg') alt='Earth from Pinterest')
+
+    .welcome-hero-inner
+      p.welcome-kicker WELCOME
+      h1.welcome-title XuJinyao的Blog
+      p.welcome-sub 欢迎来到我的博客。
+
+  section#welcome-nav-zone
+    .rolling-gallery#rolling-gallery(data-autoplay='true' data-pause-on-hover='true')
+      .rolling-viewport
+        .rolling-track(role='list')
+          a.rolling-face(href='/archives/' style='--i:0' role='listitem')
+            .rolling-card.card-1
+              .rc-num 01
+              h3.rc-title 博客文章
+              p.rc-body 查看全部文章与最新更新。
+              .rc-tags
+                span.tag Article
+                span.tag Update
+
+          a.rolling-face(href='/projects/' style='--i:1' role='listitem')
+            .rolling-card.card-2
+              .rc-num 02
+              h3.rc-title 项目作品
+              p.rc-body 项目展示、技术栈和实现过程。
+              .rc-tags
+                span.tag Build
+                span.tag Demo
+
+          a.rolling-face(href='/about/' style='--i:2' role='listitem')
+            .rolling-card.card-3
+              .rc-num 03
+              h3.rc-title 关于我
+              p.rc-body 个人介绍与简历入口。
+              .rc-tags
+                span.tag Resume
+                span.tag Story
+
+          a.rolling-face(href='/tags/' style='--i:3' role='listitem')
+            .rolling-card.card-4
+              .rc-num 04
+              h3.rc-title 标签
+              p.rc-body 按主题快速检索内容。
+              .rc-tags
+                span.tag Topic
+                span.tag Index
+
+          a.rolling-face(href='/categories/' style='--i:4' role='listitem')
+            .rolling-card.card-5
+              .rc-num 05
+              h3.rc-title 分类
+              p.rc-body 按方向浏览技术与学习路径。
+              .rc-tags
+                span.tag Class
+                span.tag Track
+
+          a.rolling-face(href='/now/' style='--i:5' role='listitem')
+            .rolling-card.card-6
+              .rc-num 06
+              h3.rc-title Now
+              p.rc-body 当前正在做的事情和近期重点。
+              .rc-tags
+                span.tag Focus
+                span.tag Live
+
+    .welcome-profile-card
+      .welcome-profile-avatar
+        img(src=url_for('/img/avatar.png') alt='Xu Jinyao avatar')
+      h3.welcome-profile-name Xu Jinyao
+      p.welcome-profile-desc Engineering undergraduate focused on systems and machine learning.
+      .welcome-profile-stats
+        a.profile-stat(href=url_for('/archives/'))
+          span.profile-stat__label 文章
+          span.profile-stat__value= site.posts.length
+        a.profile-stat(href=url_for('/tags/'))
+          span.profile-stat__label 标签
+          span.profile-stat__value= site.tags.length
+        a.profile-stat(href=url_for('/categories/'))
+          span.profile-stat__label 分类
+          span.profile-stat__value= site.categories.length
+      .welcome-profile-social
+        a.profile-social(href='https://github.com/XuJinyao0301' target='_blank' rel='noopener' title='GitHub')
+          i.fab.fa-github
+        a.profile-social(href='mailto:xu_jinyao@outlook.com' title='Email')
+          i.fas.fa-envelope
+
+  script.
+    (() => {
+      const root = document.getElementById('rolling-gallery')
+      if (!root || root.dataset.bound === 'true') return
+      root.dataset.bound = 'true'
+
+      const track = root.querySelector('.rolling-track')
+      const viewport = root.querySelector('.rolling-viewport')
+      if (!track || !viewport) return
+
+      const faceCount = track.querySelectorAll('.rolling-face').length
+      const autoplay = root.dataset.autoplay === 'true'
+      const pauseOnHover = root.dataset.pauseOnHover === 'true'
+
+      let rotateY = 0
+      let isPointerDown = false
+      let isDragging = false
+      let isHovered = false
+      let startX = 0
+      let startRot = 0
+      let lastDragAt = 0
+      let autoTimer = null
+
+      const DRAG_FACTOR = 0.25
+      const MOMENTUM = 0.1
+      const STEP = 360 / faceCount
+      const MOVE_THRESHOLD = 6
+
+      const apply = () => {
+        track.style.setProperty('--roll', `${rotateY}deg`)
+      }
+
+      const stopAuto = () => {
+        if (!autoTimer) return
+        clearInterval(autoTimer)
+        autoTimer = null
+      }
+
+      const startAuto = () => {
+        if (!autoplay) return
+        stopAuto()
+        autoTimer = setInterval(() => {
+          if (isDragging || (pauseOnHover && isHovered)) return
+          rotateY -= STEP
+          apply()
+        }, 2400)
+      }
+
+      const onDown = (clientX) => {
+        isPointerDown = true
+        isDragging = true
+        startX = clientX
+        startRot = rotateY
+        track.classList.add('dragging')
+        stopAuto()
+      }
+
+      const onMove = (clientX) => {
+        if (!isPointerDown) return
+        const delta = clientX - startX
+        if (Math.abs(delta) <= 2) return
+        rotateY = startRot + delta * DRAG_FACTOR
+        apply()
+      }
+
+      const onUp = (clientX) => {
+        if (!isPointerDown) return
+        isPointerDown = false
+        isDragging = false
+        track.classList.remove('dragging')
+        const dragDelta = clientX - startX
+        if (Math.abs(dragDelta) > MOVE_THRESHOLD) lastDragAt = Date.now()
+        const momentum = (clientX - startX) * MOMENTUM
+        rotateY += momentum
+        apply()
+
+        if (autoplay && !(pauseOnHover && isHovered)) {
+          setTimeout(() => startAuto(), 1200)
+        }
+      }
+
+      viewport.addEventListener('pointerdown', (event) => {
+        onDown(event.clientX)
+      })
+
+      window.addEventListener('pointermove', (event) => {
+        onMove(event.clientX)
+      })
+
+      const handlePointerEnd = (event) => {
+        onUp(event.clientX || startX)
+      }
+
+      window.addEventListener('pointerup', handlePointerEnd)
+      window.addEventListener('pointercancel', handlePointerEnd)
+
+      viewport.addEventListener('mouseenter', () => {
+        isHovered = true
+        if (pauseOnHover && autoplay) stopAuto()
+      })
+
+      viewport.addEventListener('mouseleave', () => {
+        isHovered = false
+        if (pauseOnHover && autoplay && !isDragging) startAuto()
+      })
+
+      viewport.addEventListener('wheel', (event) => {
+        if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return
+        event.preventDefault()
+        rotateY -= event.deltaX * 0.5
+        apply()
+      }, { passive: false })
+
+      track.querySelectorAll('.rolling-face').forEach((face) => {
+        face.addEventListener('click', (event) => {
+          if (Date.now() - lastDragAt > 220) return
+          event.preventDefault()
+        })
+      })
+
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting && autoplay) startAuto()
+          else stopAuto()
+        }, { threshold: 0.2 }).observe(root)
+      } else if (autoplay) {
+        startAuto()
+      }
+
+      apply()
+    })()

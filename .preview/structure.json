@@ -1,0 +1,126 @@
+{
+  "title": "Xu Jinyao - CS · Systems · ML Portfolio",
+  "sections": [
+    {
+      "index": 0,
+      "tag": "header",
+      "id": "page-header",
+      "className": "not-top-img fixed",
+      "rect": {
+        "top": 0,
+        "height": 0
+      }
+    },
+    {
+      "index": 1,
+      "tag": "main",
+      "id": "content-inner",
+      "className": "layout",
+      "rect": {
+        "top": 0,
+        "height": 1800
+      }
+    },
+    {
+      "index": 2,
+      "tag": "section",
+      "id": "welcome-home",
+      "className": null,
+      "rect": {
+        "top": 0,
+        "height": 1800
+      }
+    },
+    {
+      "index": 3,
+      "tag": "section",
+      "id": "welcome-hero",
+      "className": null,
+      "rect": {
+        "top": 0,
+        "height": 900
+      }
+    },
+    {
+      "index": 4,
+      "tag": "section",
+      "id": "welcome-nav-zone",
+      "className": null,
+      "rect": {
+        "top": 900,
+        "height": 900
+      }
+    },
+    {
+      "index": 5,
+      "tag": "footer",
+      "id": "footer",
+      "className": null,
+      "rect": {
+        "top": 0,
+        "height": 0
+      }
+    }
+  ],
+  "images": [
+    {
+      "src": "http://127.0.0.1:4173/img/avatar.png",
+      "alt": "avatar",
+      "width": 904,
+      "height": 904
+    },
+    {
+      "src": "http://127.0.0.1:4173/images/pinterest-earth.jpg",
+      "alt": "Earth from Pinterest",
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "src": "http://127.0.0.1:4173/img/avatar.png",
+      "alt": "avatar",
+      "width": 904,
+      "height": 904
+    }
+  ],
+  "cssLinks": [
+    "http://127.0.0.1:4173/css/index.css?v=5.5.1",
+    "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;700;800&display=swap",
+    "http://127.0.0.1:4173/self.css"
+  ],
+  "jsLibraries": [],
+  "navLinks": [
+    {
+      "text": "Xu Jinyao",
+      "href": "http://127.0.0.1:4173/"
+    },
+    {
+      "text": "Home",
+      "href": "http://127.0.0.1:4173/"
+    },
+    {
+      "text": "Categories",
+      "href": "http://127.0.0.1:4173/categories/"
+    },
+    {
+      "text": "Tags",
+      "href": "http://127.0.0.1:4173/tags/"
+    },
+    {
+      "text": "Projects",
+      "href": "http://127.0.0.1:4173/projects/"
+    },
+    {
+      "text": "About",
+      "href": "http://127.0.0.1:4173/about/"
+    },
+    {
+      "text": "Archives",
+      "href": "http://127.0.0.1:4173/archives/"
+    },
+    {
+      "text": "Now",
+      "href": "http://127.0.0.1:4173/now/"
+    }
+  ]
+}
