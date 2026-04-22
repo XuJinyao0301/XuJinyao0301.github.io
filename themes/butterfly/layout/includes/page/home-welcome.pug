@@ -5,17 +5,12 @@ section#welcome-home
     })()
 
   section#welcome-hero
-    .welcome-hero-bg
-
-    .welcome-earth-wrap(aria-hidden='true')
-      .welcome-earth-glow
-      .welcome-earth
-        img(src=url_for('/images/pinterest-earth.jpg') alt='Earth from Pinterest')
-
+    video.welcome-video(autoplay muted loop playsinline preload='metadata' aria-hidden='true')
+      source(src='https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260217_030345_246c0224-10a4-422c-b324-070b7c0eceda.mp4' type='video/mp4')
+    .welcome-video-overlay(aria-hidden='true')
     .welcome-hero-inner
-      p.welcome-kicker WELCOME
-      h1.welcome-title XuJinyao的Blog
-      p.welcome-sub 欢迎来到我的博客。
+      p.welcome-sub Welcome
+      h1.welcome-title XuJinyao's Blog
 
   section#welcome-nav-zone
     .rolling-gallery#rolling-gallery(data-autoplay='true' data-pause-on-hover='true')

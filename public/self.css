@@ -1,3 +1,4 @@
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap');
 
 :root,
@@ -672,7 +673,7 @@ div#archive {
 }
 
 /* ==================================
-   Welcome Page (Pinterest Earth + Rolling Gallery)
+   Welcome Page (Video Hero)
    ================================== */
 .welcome-mode #page-header,
 .welcome-mode #nav,
@@ -684,9 +685,7 @@ div#archive {
 }
 
 .welcome-mode #web_bg {
-  background: radial-gradient(circle at 28% 22%, rgba(47, 100, 255, 0.16), transparent 36%),
-    radial-gradient(circle at 72% 68%, rgba(72, 255, 224, 0.12), transparent 30%),
-    linear-gradient(180deg, #02060f 0%, #030914 38%, #040d1c 100%) !important;
+  background: #000000 !important;
 }
 
 .welcome-mode #content-inner.layout,
@@ -699,95 +698,69 @@ div#archive {
 
 #welcome-home {
   width: 100%;
-  color: #e8f0ff;
-  font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  min-height: 100vh;
+  background: #000000;
+  color: #ffffff;
+  font-family: 'General Sans', 'Noto Sans SC', 'PingFang SC', sans-serif;
 }
 
 #welcome-hero {
   position: relative;
   min-height: 100vh;
+  background: #000000;
   display: grid;
   place-items: center;
   overflow: hidden;
-  padding: 2rem 1.2rem;
+  padding: 52px 24px;
 }
 
-.welcome-hero-bg {
+.welcome-video {
   position: absolute;
-  inset: -18%;
-  background: radial-gradient(circle at 42% 40%, rgba(78, 139, 255, 0.2), transparent 40%),
-    radial-gradient(circle at 58% 60%, rgba(55, 236, 201, 0.14), transparent 30%);
-  filter: blur(12px);
-  pointer-events: none;
-}
-
-.welcome-earth-wrap {
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  top: 55%;
-  width: min(64vw, 700px);
-  aspect-ratio: 1 / 1;
-  transform: translate(-50%, -50%);
-  display: grid;
-  place-items: center;
-}
-
-.welcome-earth-glow {
-  position: absolute;
-  inset: 14%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(116, 201, 255, 0.52), rgba(116, 201, 255, 0.06) 62%, transparent 70%);
-  filter: blur(18px);
-}
-
-.welcome-earth {
-  width: 68%;
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid rgba(173, 219, 255, 0.54);
-  box-shadow: inset -30px -38px 64px rgba(3, 9, 24, 0.78),
-    inset 18px 24px 42px rgba(177, 223, 255, 0.18),
-    0 26px 86px rgba(2, 12, 29, 0.65);
-}
-
-.welcome-earth img {
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(1.06) contrast(1.04);
-  animation: welcome-earth-drift 34s linear infinite;
+  pointer-events: none;
+}
+
+.welcome-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
 }
 
 .welcome-hero-inner {
   position: relative;
-  z-index: 3;
-  text-align: center;
+  z-index: 2;
+  width: min(100%, 680px);
   display: grid;
-  gap: 0.7rem;
-}
-
-.welcome-kicker {
-  margin: 0;
-  color: rgba(138, 221, 255, 0.88);
-  letter-spacing: 0.24em;
-  font-size: 0.75rem;
+  gap: 24px;
+  justify-items: center;
+  text-align: center;
 }
 
 .welcome-title {
   margin: 0;
-  font-size: clamp(2rem, 6.8vw, 5.8rem);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  text-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  max-width: none;
+  font-size: clamp(34px, 7vw, 88px);
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  background: linear-gradient(144.5deg, #ffffff 28%, rgba(0, 0, 0, 0) 115%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .welcome-sub {
   margin: 0;
-  color: rgba(217, 230, 255, 0.9);
-  line-height: 1.7;
-  font-size: clamp(1rem, 1.3vw, 1.12rem);
+  max-width: 680px;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 #welcome-nav-zone {
@@ -796,6 +769,7 @@ div#archive {
   display: grid;
   align-content: start;
   gap: 1.6rem;
+  background: #000000;
 }
 
 .rolling-gallery {
@@ -820,12 +794,12 @@ div#archive {
 
 .rolling-gallery::before {
   left: 0;
-  background: linear-gradient(90deg, #040913, transparent);
+  background: linear-gradient(90deg, #000000, transparent);
 }
 
 .rolling-gallery::after {
   right: 0;
-  background: linear-gradient(-90deg, #040913, transparent);
+  background: linear-gradient(-90deg, #000000, transparent);
 }
 
 .rolling-viewport {
@@ -934,15 +908,17 @@ div#archive {
 
 .rc-num {
   margin: 0 0 0.75rem;
-  font-family: 'JetBrains Mono', monospace;
   font-size: 0.74rem;
+  font-weight: 500;
   letter-spacing: 0.14em;
   color: rgba(206, 224, 255, 0.55);
 }
 
 .rc-title {
   margin: 0 0 0.75rem;
-  font: 700 2rem/1.2 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.2;
   color: #eef4ff;
 }
 
@@ -968,7 +944,9 @@ div#archive {
   background: rgba(31, 200, 169, 0.22);
   border: 1px solid rgba(121, 233, 212, 0.3);
   color: #82f6de;
-  font: 500 10.5px/1.4 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1.4;
   letter-spacing: 0.04em;
 }
 
@@ -1001,7 +979,9 @@ div#archive {
 
 .welcome-profile-name {
   margin: 0;
-  font: 700 clamp(1.4rem, 3vw, 2rem)/1.2 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 500;
+  line-height: 1.2;
   color: #dce9ff;
 }
 
@@ -1036,7 +1016,9 @@ div#archive {
 }
 
 .profile-stat__value {
-  font: 700 1.28rem/1.1 'JetBrains Mono', monospace;
+  font-size: 1.28rem;
+  font-weight: 500;
+  line-height: 1.1;
   color: #8cd9ff;
 }
 
@@ -1064,26 +1046,7 @@ div#archive {
   color: #cdf3ff !important;
 }
 
-@keyframes welcome-earth-drift {
-  from {
-    transform: scale(1.02) rotate(0deg);
-  }
-
-  to {
-    transform: scale(1.02) rotate(360deg);
-  }
-}
-
 @media (max-width: 900px) {
-  .welcome-earth-wrap {
-    width: min(90vw, 560px);
-    top: 58%;
-  }
-
-  .welcome-earth {
-    width: 72%;
-  }
-
   .rolling-gallery {
     height: 480px;
   }
@@ -1107,17 +1070,13 @@ div#archive {
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   #welcome-hero {
-    min-height: 90vh;
+    padding: 36px 18px;
   }
 
-  .welcome-earth-wrap {
-    top: 61%;
-  }
-
-  .welcome-earth {
-    width: 78%;
+  .welcome-title {
+    font-size: clamp(34px, 10vw, 56px);
   }
 
   #welcome-nav-zone {
@@ -1164,11 +1123,5 @@ div#archive {
 
   .profile-stat {
     min-height: 58px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .welcome-earth img {
-    animation: none !important;
   }
 }
