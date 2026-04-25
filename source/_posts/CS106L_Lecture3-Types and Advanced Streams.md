@@ -120,3 +120,78 @@ cin >> line
 读一个 token，遇到空白就停
 getline(cin, line)
 读一整行，默认遇到换行符 \n 才停，并且会把这个换行符消费掉，但不会放进结果字符串里。
+
+## 混用 >> 与 getline 出现的 bug
+```
+istringstream iss("16.9 Ounces\n Pack of 12");
+double amount;
+string unit;
+
+iss >> amount;
+getline(iss, unit);
+```
+
+我们会发现：
+amount 读出来是对的，但 unit 却不是你以为的 "Ounces" 或 " Ounces"，而是先变成了空字符串
+
+这是因为 >> 和 getline 对“分隔符/空白”的处理方式不同
+
+### iss >> amount 做了什么
+
+假设流里一开始是
+```
+16.9 Ounces
+ Pack of 12
+```
+执行
+```
+iss >> amount
+```
+
+amount = 16.9
+读取位置停在 16.9 后面的那个空格前后附近 的关键位置上
+
+更准确地说，>> 在读 double 时，会把能构成 double 的部分读完，然后停下来，后面的空格/换行还在流里等待后续处理。
+
+### 马上 getline(iss, unit) 会发生什么
+
+getline 的规则是：
+从当前位置开始，一直读到换行符 \n 为止。
+它不会像 >> 一样先主动跳过前导空白。这一点特别重要。
+所以如果当前位置前面正好残留了一个空格，或者更常见的是残留了一个换行符，那么 getline 可能直接读到“空内容”
+
+### 最常见的坑
+
+虽然说在CS106L中用的是 istirngstream, 但最常见的坑应该是在 cin 上，原因和 iss 的情况一样
+
+### 重点1: getline 不会自动跳过前导空白
+
+>>
+会先跳过前导空白
+getline
+不会跳过，它从当前位置直接开始读
+所以只要你前面用 >> 留下了换行符，后面紧接一个 getline，就特别容易出问题
+
+### 修复方法
+```
+iss >> amount;
+iss.ignore();
+getline(iss, unit);
+```
+
+这里加上 iss.ignore(), 再 getline 就可以正常读到"Ounces"
+
+#### ignore() 的作用
+
+可以把它理解成：
+手动丢掉流里当前那个你不想要的字符
+
+在这个例子里，就是把前面 >> 留下的那个分隔字符先扔掉，然后再让 getline 从真正想读的位置开始读
+
+一般情况，ignore()指忽略接下来的1个字符
+
+如果是带参数
+```
+ignore(n, '\n')
+```
+表示 最多忽略 n 个字符，遇到分隔符 \n 时把该分隔符丢掉后停止
