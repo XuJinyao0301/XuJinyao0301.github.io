@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug active C++ file",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/../../.cpp-build/${fileBasenameNoExtension}",
+      "args": [],
+      "cwd": "${fileDirname}",
+      "preLaunchTask": "Build active C++ file",
+      "terminal": "integrated"
+    }
+  ]
+}

@@ -125,6 +125,10 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+# Local C++ debug/build outputs
+.cpp-build/
+*.dSYM/
+
 # yarn v3
 .pnp.*
 .yarn/*
