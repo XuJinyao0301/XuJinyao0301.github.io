@@ -1,0 +1,1583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>CS106L_Lecture2-Stream</title>
+    <url>/2026/03/26/CS106L_Lecture2-Stream/</url>
+    <content><![CDATA[<h2 id="什么是Stream"><a href="#什么是Stream" class="headerlink" title="什么是Stream"></a>什么是Stream</h2><p>stream直译过来就是“流”</p>
+<p>我们可以把它看作是一个数据流动的管道：</p>
+<p>数据可以通过键盘输入，流进程序<br>数据可以通过程序输出，流到屏幕<br>文件里的数据可以流进程序里<br>程序里的数据可以流到文件里</p>
+<p>常见的stream有 cin 和 cout</p>
+<h2 id="ostringstream"><a href="#ostringstream" class="headerlink" title="ostringstream"></a>ostringstream</h2><h3 id="ostringstream-是什么"><a href="#ostringstream-是什么" class="headerlink" title="ostringstream 是什么"></a>ostringstream 是什么</h3><p>ostringstream 可以拆成两部分看：</p>
+<p>output：输出<br>string stream：字符串流</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; <span class="number">123</span>;</span><br></pre></td></tr></table></figure>
+<p>是把123输出到屏幕</p>
+<p>而</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">ostringstream oss;</span><br><span class="line">oss &lt;&lt; <span class="number">123</span>;</span><br></pre></td></tr></table></figure>
+<p>是把123输出到oss这一个变量里面，最后变成一个字符串</p>
+<p>例如</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ostringstream oss;</span><br><span class="line">    oss &lt;&lt; <span class="string">&quot;age = &quot;</span> &lt;&lt; <span class="number">18</span>;</span><br><span class="line"></span><br><span class="line">    string s = oss.<span class="built_in">str</span>();</span><br><span class="line">    cout &lt;&lt; s &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果是</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">age = <span class="number">18</span></span><br></pre></td></tr></table></figure>
+<p>这里不是直接打印到屏幕，而是先“攒”成字符串，再取出来。</p>
+<p>这里的oss.str()是ostringstream很关键的一个函数</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">string s = oss.<span class="built_in">str</span>();</span><br></pre></td></tr></table></figure>
+<p>意思是把这个流里面积累的内容全部取出来给字符串s</p>
+<p>比如</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">ostringstream oss;</span><br><span class="line">oss &lt;&lt; <span class="string">&quot;Hello &quot;</span> &lt;&lt; <span class="string">&quot;world &quot;</span> &lt;&lt; <span class="number">123</span>;</span><br></pre></td></tr></table></figure>
+<p>这时候 oss 里面其实已经存着：Hello world 123了</p>
+<p>这个东西的作用就在于 面对处理复杂字符串拼接时更加自然。</p>
+<h3 id="ostringstream-的写位置"><a href="#ostringstream-的写位置" class="headerlink" title="ostringstream 的写位置"></a>ostringstream 的写位置</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">ostringstream <span class="title">oss</span><span class="params">(<span class="string">&quot;Ito-En Green Tea&quot;</span>)</span></span>;</span><br><span class="line">cout &lt;&lt; oss.<span class="built_in">str</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">oss &lt;&lt; <span class="string">&quot;16.9 Ounces&quot;</span>;</span><br><span class="line">cout &lt;&lt; oss.<span class="built_in">str</span>() &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码的输出结果是</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Ito-En Green Tea</span><br><span class="line"><span class="number">16.9</span> Ouncesn Tea</span><br></pre></td></tr></table></figure>
+<p>为什么第二行的结果是这样的呢？</p>
+<p>因为ostringstream 有一个“写位置”（put pointer）。<br>它不会默认跳到字符串末尾去追加，而是从当前写位置开始覆盖写。<br>在这种构造下，写位置一开始在开头，所以会把原来前面的字符覆盖掉。<br>但是我们可以用ostringstream::ate把初始写位置定位到末尾</p>
+<p>ate 可以理解成 at end</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">ostringstream <span class="title">oss</span><span class="params">(<span class="string">&quot;Ito-En Green Tea&quot;</span>, ostringstream::ate)</span></span>;</span><br><span class="line">oss &lt;&lt; <span class="string">&quot; 16.9 Ounces&quot;</span>;</span><br><span class="line">cout &lt;&lt; oss.<span class="built_in">str</span>() &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<p>这样结果就会是:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Ito-En Green Tea <span class="number">16.9</span> Ounces</span><br></pre></td></tr></table></figure>
+
+<h2 id="istringstream"><a href="#istringstream" class="headerlink" title="istringstream"></a>istringstream</h2><h3 id="istringstream-是什么"><a href="#istringstream-是什么" class="headerlink" title="istringstream 是什么"></a>istringstream 是什么</h3><p>同样istringstream可以分为两部分：</p>
+<p>input：输入</p>
+<p>string stream：字符串流</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">string s = <span class="string">&quot;123&quot;</span>;</span><br><span class="line"><span class="function">istringstream <span class="title">iss</span><span class="params">(s)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> x;</span><br><span class="line">iss &gt;&gt; x;</span><br></pre></td></tr></table></figure>
+<p>这里不是键盘输入，而是字符串 “123” 充当了输入源。<br>它的读取方式和 cin 很像，<br>所以可以把它理解成“假装这个字符串是键盘输入”</p>
+<h3 id="istringstream-的读位置"><a href="#istringstream-的读位置" class="headerlink" title="istringstream 的读位置"></a>istringstream 的读位置</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    string line = <span class="string">&quot;101 Jinyao 18&quot;</span>;</span><br><span class="line">    <span class="function">istringstream <span class="title">iss</span><span class="params">(line)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> id, age;</span><br><span class="line">    string name;</span><br><span class="line"></span><br><span class="line">    iss &gt;&gt; id &gt;&gt; name &gt;&gt; age;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; id &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    cout &lt;&lt; name &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    cout &lt;&lt; age &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码的输出结果是：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="number">101</span></span><br><span class="line">Jinyao</span><br><span class="line"><span class="number">18</span></span><br></pre></td></tr></table></figure>
+<p>它内部有一个读指针，读一次，就往后走一次。</p>
+<p>istringstream 用 &gt;&gt; 读取时，一般会在这几种情况停下：</p>
+<p>第一种：遇到空白字符</p>
+<p>空格、换行、tab</p>
+<p>第二种：遇到不符合当前类型格式的字符</p>
+<p>比如你在读 int，结果遇到了字母</p>
+<p>第三种：读到字符串结尾</p>
+<p>也就是没有更多内容了</p>
+<p>例如</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">istringstream <span class="title">iss</span><span class="params">(<span class="string">&quot;123 abc 45&quot;</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    string s;</span><br><span class="line">    <span class="type">int</span> y;</span><br><span class="line"></span><br><span class="line">    iss &gt;&gt; x;   <span class="comment">// 读到 123，遇到空格停</span></span><br><span class="line">    iss &gt;&gt; s;   <span class="comment">// 读到 abc，遇到空格停</span></span><br><span class="line">    iss &gt;&gt; y;   <span class="comment">// 读到 45，读到结尾停</span></span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; x &lt;&lt; <span class="string">&quot;\n&quot;</span> &lt;&lt; s &lt;&lt; <span class="string">&quot;\n&quot;</span> &lt;&lt; y &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里三次停止分别是：</p>
+<p>第一次：遇到空格停<br>第二次：遇到空格停<br>第三次：遇到字符串结尾停</p>
+<h2 id="stringToIntegerTest"><a href="#stringToIntegerTest" class="headerlink" title="stringToIntegerTest"></a>stringToIntegerTest</h2><p>现在我们来编写一个把字符串转化成整数的函数：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">stringToInteger</span><span class="params">(<span class="type">const</span> string&amp; s)</span></span>&#123;</span><br><span class="line">    <span class="function">istringstream <span class="title">iss</span><span class="params">(s)</span></span>;</span><br><span class="line">    <span class="type">int</span> result;</span><br><span class="line">    iss &gt;&gt; result;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们在这里输入的不是数字的话，该程序的结果就会是一个垃圾值，<br>但是如果我们输入的字符串开头可被读取整数，例如 123a ，那么程序就会读取123，然后结果就是123了。</p>
+<h2 id="Four-bits状态位"><a href="#Four-bits状态位" class="headerlink" title="Four bits状态位"></a>Four bits状态位</h2><h3 id="Good-bit"><a href="#Good-bit" class="headerlink" title="Good bit"></a>Good bit</h3><p>Ready for read&#x2F;write<br>stream就绪，可执行读写操作<br>表示stream无错误，可以正常读写</p>
+<h3 id="Fail-bit"><a href="#Fail-bit" class="headerlink" title="Fail bit"></a>Fail bit</h3><p>previous operation failed, all future operations frozen<br>上一次操作失败，后续所有操作被冻结<br>通常是格式错误、输入不匹配等可恢复错误</p>
+<h3 id="EOF-bit"><a href="#EOF-bit" class="headerlink" title="EOF bit"></a>EOF bit</h3><p>previous operation reached the end of buffer content<br>上一次操作已到达缓冲区内容末尾<br>表示读取到了stream的末尾(End of File)</p>
+<h3 id="Bad-bit"><a href="#Bad-bit" class="headerlink" title="Bad bit"></a>Bad bit</h3><p>external error,likely irrecoverable<br>发生外部错误，通常不可恢复<br>多位硬件&#x2F;系统级错误（如磁盘故障、stream断开）</p>
+<h2 id="buffer-stream"><a href="#buffer-stream" class="headerlink" title="buffer stream"></a>buffer stream</h2><h3 id="buffer-stream-是什么"><a href="#buffer-stream-是什么" class="headerlink" title="buffer stream 是什么"></a>buffer stream 是什么</h3><p>buffer stream ：characters are stored in an intermediate buffer before being moved to the external source<br>带缓冲的流：字符在被转移到外部数据源之前，会先存储在中间缓冲区</p>
+<h3 id="buffer-stream-的工作流程"><a href="#buffer-stream-的工作流程" class="headerlink" title="buffer stream 的工作流程"></a>buffer stream 的工作流程</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">cout &lt;&lt; <span class="string">&quot;hello&quot;</span>;</span><br></pre></td></tr></table></figure>
+<p>“hello”会先写进cout的缓冲区<br>当满足以下条件时，缓冲区才会被刷新（flush），把字符真正输出到控制台</p>
+<ol>
+<li>缓冲区被写满</li>
+<li>程序执行到 endl ，或者手动调用 flush()</li>
+<li>程序正常结束</li>
+<li>输入流（cin）被触发（会自动刷新cout缓冲区）</li>
+</ol>
+<h3 id="为什么要用-buffer"><a href="#为什么要用-buffer" class="headerlink" title="为什么要用 buffer"></a>为什么要用 buffer</h3><p>直接频繁地向控制台进行 IO 操作，会非常慢，用缓冲区可以把多次小操作合并成一次大操作，从而大幅提升程序的运行效率</p>
+<h2 id="manipulators"><a href="#manipulators" class="headerlink" title="manipulators"></a>manipulators</h2><p>有些操纵符插入到流中，会改变流的行为,<br>这里我们直接通过代码展示</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// endl ：插入换行符并刷新流</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Hello&quot;</span> &lt;&lt; endl &lt;&lt; <span class="string">&quot;World&quot;</span> &lt;&lt; endl; <span class="comment">// 换行+刷新</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// boolalpha ：以 true/false 字符串形式输出布尔值</span></span><br><span class="line">    cout &lt;&lt; boolalpha &lt;&lt; <span class="literal">true</span> &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; <span class="literal">false</span> &lt;&lt; endl; <span class="comment">// 输出 true false</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// hex ：以十六进制格式输出数字</span></span><br><span class="line">    cout &lt;&lt; hex &lt;&lt; <span class="number">255</span> &lt;&lt; endl; <span class="comment">// 输出 ff（十六进制）</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// setprecision ：调整输出数字的精度</span></span><br><span class="line">    cout &lt;&lt; <span class="built_in">setprecision</span>(<span class="number">3</span>) &lt;&lt; <span class="number">3.14159</span> &lt;&lt; endl; <span class="comment">// 输出 3.14（3位有效数字）</span></span><br><span class="line">    cout &lt;&lt; fixed &lt;&lt; <span class="built_in">setprecision</span>(<span class="number">2</span>) &lt;&lt; <span class="number">3.14159</span> &lt;&lt; endl; <span class="comment">// 输出 3.14（小数点后2位）</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Programming</category>
+      </categories>
+      <tags>
+        <tag>CSDIY</tag>
+        <tag>CS106L</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CS106L_Lecture3-Types and Advanced Streams</title>
+    <url>/2026/04/07/CS106L_Lecture3-Types%20and%20Advanced%20Streams/</url>
+    <content><![CDATA[<h2 id="cin-的读取"><a href="#cin-的读取" class="headerlink" title="cin 的读取"></a>cin 的读取</h2><p><img src="/images/cs106l_lec3-01.jpg" alt="cin 缓冲区读取示意图"></p>
+<p>我们可以看到，当我们输入 Avery Wang 时，<br>在 cin 的缓冲区里，只有 Avery 被读走了，后面还剩 Wang\n<br>而下一个将要被读取的位置在 W 这里</p>
+<h3 id="为什么-cin-name-只读取出-“Avery”"><a href="#为什么-cin-name-只读取出-“Avery”" class="headerlink" title="为什么 cin &gt;&gt; name; 只读取出 “Avery”?"></a>为什么 cin &gt;&gt; name; 只读取出 “Avery”?</h3><p>因为对于字符串 name 来说，&gt;&gt; 默认是 按空白分隔读取 的<br>也就是说它会：<br>跳过前导空白<br>一直读，直到遇到空格、换行、tab为止</p>
+<h3 id="为什么-cin-age-会失败"><a href="#为什么-cin-age-会失败" class="headerlink" title="为什么 cin &gt;&gt; age; 会失败"></a>为什么 cin &gt;&gt; age; 会失败</h3><p>在输出结果中，显示的 age 是 0 ，<br>这是因为 age 是 int，<br>cin 期待读取到一个整数，<br>而缓冲区里下一个有效字符是 W ，而不是数字<br>于是：<br>cin 无法将 W 解析成 int<br>从而本次读取失败<br>fail bit 被设置为 1<br>所以我们可以看到右边的状态位中，F被点亮了</p>
+<h3 id="The-worst"><a href="#The-worst" class="headerlink" title="The worst"></a>The worst</h3><p>一旦 fail bit 被置上，后续所有的 cin 读取都会直接失败！</p>
+<h2 id="第一版修复"><a href="#第一版修复" class="headerlink" title="第一版修复"></a>第一版修复</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int getInteger(const string&amp; prompt) &#123;</span><br><span class="line">    cout &lt;&lt; prompt;</span><br><span class="line">    string token;</span><br><span class="line">    cin &gt;&gt; token;   // still a problem</span><br><span class="line">    istringstream iss(token);</span><br><span class="line">    int result;</span><br><span class="line">    char trash;</span><br><span class="line">    if (!(iss &gt;&gt; result) || iss &gt;&gt; trash)</span><br><span class="line">        return getInteger(prompt); // bad recursion</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里是先把输入读成字符串，再自己解析。<br>但是仍然存在问题</p>
+<h3 id="问题-A"><a href="#问题-A" class="headerlink" title="问题 A"></a>问题 A</h3><p>cin &gt;&gt; token 还是只读取一个token<br>例如我们输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">20 lol</span><br></pre></td></tr></table></figure>
+<p>那cin &gt;&gt; token 只会读到</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">token = &quot;20&quot;</span><br></pre></td></tr></table></figure>
+<p>后面的 lol 还留在原始输入缓冲区里</p>
+<h3 id="问题-B"><a href="#问题-B" class="headerlink" title="问题 B"></a>问题 B</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">return getInteger(prompt);</span><br></pre></td></tr></table></figure>
+<p>这个写法叫 递归重试</p>
+<p>它的问题是：</p>
+<ul>
+<li>输入错误很多次，会一层一层递归下去</li>
+<li>虽然程序里未必立刻出事，但设计上不优雅</li>
+<li>重试逻辑本来就更适合 while (true) 循环</li>
+</ul>
+<h2 id="终版修复"><a href="#终版修复" class="headerlink" title="终版修复"></a>终版修复</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int getInteger(const string&amp; prompt) &#123;</span><br><span class="line">    while (true) &#123;</span><br><span class="line">        cout &lt;&lt; prompt;</span><br><span class="line">        string line;</span><br><span class="line">        if (!getline(cin, line))</span><br><span class="line">            throw domain_error(&quot;...&quot;);</span><br><span class="line">        istringstream iss(line);</span><br><span class="line">        int result;</span><br><span class="line">        char trash;</span><br><span class="line">        if (iss &gt;&gt; result &amp;&amp; !(iss &gt;&gt; trash))</span><br><span class="line">            return result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里先用 getline 把整行读出来，<br>再把这一整行去解析</p>
+<p>这里 getline(cin, line) 的意思是： 从 cin 这个输入流里，读取一整行，存到 line 里<br>函数原型是 getline(输入流, 字符串变量);<br>它还可以从字符串流读</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">istringstream iss(&quot;hello\nworld&quot;);</span><br><span class="line">string line;</span><br><span class="line">getline(iss, line);</span><br></pre></td></tr></table></figure>
+
+<h2 id="cin-与-getline-的区别"><a href="#cin-与-getline-的区别" class="headerlink" title="cin 与 getline 的区别"></a>cin 与 getline 的区别</h2><p>cin &gt;&gt; line<br>读一个 token，遇到空白就停<br>getline(cin, line)<br>读一整行，默认遇到换行符 \n 才停，并且会把这个换行符消费掉，但不会放进结果字符串里。</p>
+<h2 id="混用-与-getline-出现的-bug"><a href="#混用-与-getline-出现的-bug" class="headerlink" title="混用 &gt;&gt; 与 getline 出现的 bug"></a>混用 &gt;&gt; 与 getline 出现的 bug</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">istringstream iss(&quot;16.9 Ounces\n Pack of 12&quot;);</span><br><span class="line">double amount;</span><br><span class="line">string unit;</span><br><span class="line"></span><br><span class="line">iss &gt;&gt; amount;</span><br><span class="line">getline(iss, unit);</span><br></pre></td></tr></table></figure>
+
+<p>我们会发现：<br>amount 读出来是对的，但 unit 却不是你以为的 “Ounces” 或 “ Ounces”，而是先变成了空字符串</p>
+<p>这是因为 &gt;&gt; 和 getline 对“分隔符&#x2F;空白”的处理方式不同</p>
+<h3 id="iss-amount-做了什么"><a href="#iss-amount-做了什么" class="headerlink" title="iss &gt;&gt; amount 做了什么"></a>iss &gt;&gt; amount 做了什么</h3><p>假设流里一开始是</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">16.9 Ounces</span><br><span class="line"> Pack of 12</span><br></pre></td></tr></table></figure>
+<p>执行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iss &gt;&gt; amount</span><br></pre></td></tr></table></figure>
+
+<p>amount &#x3D; 16.9<br>读取位置停在 16.9 后面的那个空格前后附近 的关键位置上</p>
+<p>更准确地说，&gt;&gt; 在读 double 时，会把能构成 double 的部分读完，然后停下来，后面的空格&#x2F;换行还在流里等待后续处理。</p>
+<h3 id="马上-getline-iss-unit-会发生什么"><a href="#马上-getline-iss-unit-会发生什么" class="headerlink" title="马上 getline(iss, unit) 会发生什么"></a>马上 getline(iss, unit) 会发生什么</h3><p>getline 的规则是：<br>从当前位置开始，一直读到换行符 \n 为止。<br>它不会像 &gt;&gt; 一样先主动跳过前导空白。这一点特别重要。<br>所以如果当前位置前面正好残留了一个空格，或者更常见的是残留了一个换行符，那么 getline 可能直接读到“空内容”</p>
+<h3 id="最常见的坑"><a href="#最常见的坑" class="headerlink" title="最常见的坑"></a>最常见的坑</h3><p>虽然说在CS106L中用的是 istirngstream, 但最常见的坑应该是在 cin 上，原因和 iss 的情况一样</p>
+<h3 id="重点1-getline-不会自动跳过前导空白"><a href="#重点1-getline-不会自动跳过前导空白" class="headerlink" title="重点1: getline 不会自动跳过前导空白"></a>重点1: getline 不会自动跳过前导空白</h3><p><code>&gt;&gt;</code><br>会先跳过前导空白<br>getline<br>不会跳过，它从当前位置直接开始读<br>所以只要你前面用 &gt;&gt; 留下了换行符，后面紧接一个 getline，就特别容易出问题</p>
+<h3 id="修复方法"><a href="#修复方法" class="headerlink" title="修复方法"></a>修复方法</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iss &gt;&gt; amount;</span><br><span class="line">iss.ignore();</span><br><span class="line">getline(iss, unit);</span><br></pre></td></tr></table></figure>
+
+<p>这里加上 iss.ignore(), 再 getline 就可以正常读到”Ounces”</p>
+<h4 id="ignore-的作用"><a href="#ignore-的作用" class="headerlink" title="ignore() 的作用"></a>ignore() 的作用</h4><p>可以把它理解成：<br>手动丢掉流里当前那个你不想要的字符</p>
+<p>在这个例子里，就是把前面 &gt;&gt; 留下的那个分隔字符先扔掉，然后再让 getline 从真正想读的位置开始读</p>
+<p>一般情况，ignore()指忽略接下来的1个字符</p>
+<p>如果是带参数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ignore(n, &#x27;\n&#x27;)</span><br></pre></td></tr></table></figure>
+<p>表示 最多忽略 n 个字符，遇到分隔符 \n 时把该分隔符丢掉后停止</p>
+<h2 id="size-t"><a href="#size-t" class="headerlink" title="size_t"></a>size_t</h2><h3 id="一个-warning-例子"><a href="#一个-warning-例子" class="headerlink" title="一个 warning 例子"></a>一个 warning 例子</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">string str = &quot;Hello World!&quot;;</span><br><span class="line">for (int i = 0; i &lt; str.size(); ++i) &#123;</span><br><span class="line">    cout &lt;&lt; str[i] &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很多编译器会发出警告：signed &#x2F; unsigned comparison</p>
+<h4 id="为什么会警告"><a href="#为什么会警告" class="headerlink" title="为什么会警告"></a>为什么会警告</h4><p>因为：</p>
+<ol>
+<li>i 是 int，是 signed(有符号)</li>
+<li>str.size()返回的通常是 size_t，是 unsigned(无符号)</li>
+</ol>
+<p>所以这句</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">i &lt; str.size()</span><br></pre></td></tr></table></figure>
+<p>本质上是在比较：<br>有符号整数 VS 无符号整数</p>
+<h3 id="size-t-是什么"><a href="#size-t-是什么" class="headerlink" title="size_t 是什么"></a>size_t 是什么</h3><p>我们可以简单理解成：专门用开表示“大小、长度、索引”这类永远不会是负数的整数类型<br>比如：</p>
+<ol>
+<li>字符串长度</li>
+<li>容器大小</li>
+<li>数组下标</li>
+</ol>
+<h3 id="优化写法"><a href="#优化写法" class="headerlink" title="优化写法"></a>优化写法</h3><p>所以更好的写法是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">for (size_t i = 0; i &lt; str.size(); ++i) &#123;</span><br><span class="line">    cout &lt;&lt; str[i] &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="size-t-带来的-bug"><a href="#size-t-带来的-bug" class="headerlink" title="size_t 带来的 bug"></a>size_t 带来的 bug</h3><p>来看这段代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">string chopBothEnds(const string&amp; str) &#123;</span><br><span class="line">    string result = &quot;&quot;;</span><br><span class="line">    for (size_t i = 1; i &lt; str.size() - 1; ++i) &#123;</span><br><span class="line">        result += str[i];</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码看上去像是在“去掉首尾字符”<br>但是当 str 很短的时候<br>比如 str &#x3D; “”<br>那么 str.size() &#x3D;&#x3D; 0<br>而 size_t 是无符号数<br>所以 0 - 1 不会变成 -1，而是会发生下溢，变成一个非常大的数<br>这就回让循环条件变得很危险</p>
+<h2 id="type-alias"><a href="#type-alias" class="headerlink" title="type alias"></a>type alias</h2><p>type alias 叫做 类型别名<br>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">using map_iterator = std::unordered_map&lt;forward_list&lt;Student&gt;,</span><br><span class="line">                                        unordered_set&gt;::const_iterator;</span><br></pre></td></tr></table></figure>
+<p>这表示：<br>给这个超长的类型名起一个新名字：map_iterator<br>然后我们就可以写：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">map_iterator begin = studentMap.cbegin();</span><br><span class="line">map_iterator end = studentMap.cend();</span><br></pre></td></tr></table></figure>
+
+<p>它的作用就是 简化<br>当类型特别长、特别丑、反复出现时，起别名能让代码更可读</p>
+<h2 id="auto"><a href="#auto" class="headerlink" title="auto"></a>auto</h2><p>如果类型不重要，或者编译器很容易推断出来，就可以用 auto</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">auto begin = studentMap.cbegin();</span><br><span class="line">auto end = studentMap.cend();</span><br></pre></td></tr></table></figure>
+
+<p>这里我们根本不需要死记那个迭代器的完整类型<br>我们只用关心：它是个能用的 iterator<br>那交给编译器推断就行</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">auto name = &quot;Avery&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>这个类型不是 string，而是更接近 C 风格字符串<br>如果真要写 string，要写：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">auto betterName1 = string&#123;&quot;Avery&quot;&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>auto discards const and references!!!<br>auto 会丢掉引用和顶层 const</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const string&amp; s = someString;</span><br><span class="line">auto x = s;</span><br></pre></td></tr></table></figure>
+<p>那 x 往往不是 const string&amp;，而是一个新的 string 副本<br>也就是说：</p>
+<p>原来是引用<br>结果 auto 一推断，变成值拷贝了</p>
+<p>如果想保留引用属性，要显式写：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">auto&amp; x = s;</span><br></pre></td></tr></table></figure>
+
+<p>如果是 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const auto&amp; x = s;</span><br></pre></td></tr></table></figure>
+<p>那么我们不能通过 x 修改 s，只能用 x 引用 s<br>也就是只读引用<br>这是遍历大对象并只读时最推荐的写法</p>
+<p>所以以后看到 auto，我们要想一下我们要的是值还是引用</p>
+<h2 id="pair、tuple、struct"><a href="#pair、tuple、struct" class="headerlink" title="pair、tuple、struct"></a>pair、tuple、struct</h2><h3 id="pair"><a href="#pair" class="headerlink" title="pair"></a>pair</h3><p>pair 表示一对值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">auto prices = make_pair(3.4, 5);</span><br></pre></td></tr></table></figure>
+
+<p>这里 prices 的类型是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pair&lt;double, int&gt;</span><br></pre></td></tr></table></figure>
+
+<p>访问方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">prices.first</span><br><span class="line">prices.second</span><br></pre></td></tr></table></figure>
+
+<h3 id="tuple"><a href="#tuple" class="headerlink" title="tuple"></a>tuple</h3><p>tuple 可以表示多个值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">auto values = make_tuple(3, 4, &quot;hi&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>访问方式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">get&lt;0&gt;(values)</span><br><span class="line">get&lt;1&gt;(values)</span><br><span class="line">get&lt;2&gt;(values)</span><br></pre></td></tr></table></figure>
+
+<h3 id="structured-binding-结构化绑定"><a href="#structured-binding-结构化绑定" class="headerlink" title="structured binding 结构化绑定"></a>structured binding 结构化绑定</h3><p>这是 modern C++ 里特别好用的语法<br>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">auto [a, b] = prices;</span><br></pre></td></tr></table></figure>
+<p>意思是把 pair 里的两个值直接拆出来，分别赋值给 a 和 b</p>
+<p>再比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const auto&amp; [x, y, z] = values;</span><br></pre></td></tr></table></figure>
+<p>这里就是把 tuple 里的每一项分别赋值给 x,y,z</p>
+<h3 id="struct"><a href="#struct" class="headerlink" title="struct"></a>struct</h3><p>如果这些值本来就是“同一个对象的多个属性”，那通常 struct 比 pair&#x2F;tuple 更清晰</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct Discount &#123;</span><br><span class="line">    double discountFactor;</span><br><span class="line">    int expirationDate;</span><br><span class="line">    string nameOfDiscount;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>然后创建对象；</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">auto coupon1 = Discount&#123;0.9, 30, &quot;New Years&quot;&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="reference-引用"><a href="#reference-引用" class="headerlink" title="reference 引用"></a>reference 引用</h2><p>看这个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">string tea = &quot;Ito-En&quot;;</span><br><span class="line">string copy = tea;</span><br><span class="line">string&amp; ref = tea;</span><br></pre></td></tr></table></figure>
+
+<p>这里有三种东西：<br> tea：原对象<br> copy：拷贝<br> ref：引用，给 tea 起了个别名</p>
+<h3 id="拷贝和引用的区别"><a href="#拷贝和引用的区别" class="headerlink" title="拷贝和引用的区别"></a>拷贝和引用的区别</h3><p>拷贝：copy 是独立对象<br>     改变 copy 并不会对 tea 造成影响<br>引用：ref 就是 tea 的另一个名字<br>     改变 ref，就是在改变 tea</p>
+<h3 id="引用不能改绑"><a href="#引用不能改绑" class="headerlink" title="引用不能改绑"></a>引用不能改绑</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ref = copy</span><br></pre></td></tr></table></figure>
+<p>这不是让 ref 改为引用 copy<br>而是 把 copy 的内容赋值给 ref 绑定对对象 tea<br>也就是说，引用一旦绑定，通常就不能重新指向别的对象了</p>
+<h2 id="dangling-reference-悬空引用"><a href="#dangling-reference-悬空引用" class="headerlink" title="dangling reference 悬空引用"></a>dangling reference 悬空引用</h2><p>never return references to local variables!<br>永远不要返回对局部变量的引用！</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">char&amp; firstCharBad(string&amp; s) &#123;</span><br><span class="line">    string local = s;</span><br><span class="line">    return local[0];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里返回的是 local[0] 的引用<br>但问题是：local 是局部变量<br>函数一结束 local就销毁了<br>那么返回出去的引用，就指向了一个不存在的对象<br>这就是悬空引用</p>
+<p>这个引用看起来还能用，实际上已经指向无效内存了。<br>属于未定义行为</p>
+<p>正确写法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">char&amp; firstCharGood(string&amp; s) &#123;</span><br><span class="line">    return s[0];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里返回的是调用者传进来的字符串 s 里的字符引用<br>只要 s 活着，这个引用就是有效的</p>
+<h2 id="uniform-initialization-统一初始化"><a href="#uniform-initialization-统一初始化" class="headerlink" title="uniform initialization 统一初始化"></a>uniform initialization 统一初始化</h2><p>统一初始化也叫花括号初始化</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vector&lt;int&gt; vec&#123;3, 1, 4, 1, 5, 9&#125;;</span><br></pre></td></tr></table></figure>
+<p>还有</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Course now&#123;</span><br><span class="line">    &quot;CS106L&quot;,</span><br><span class="line">    &#123;13, 30&#125;, &#123;14, 30&#125;,</span><br><span class="line">    &#123;&quot;Wang&quot;, &quot;Zeng&quot;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这是在用一种统一、现代的方式初始化各种对象<br>它在 modern C++ 里很常见，尤其配合：<br> struct<br> vector<br> 返回值构造</p>
+]]></content>
+      <categories>
+        <category>Programming</category>
+      </categories>
+      <tags>
+        <tag>CSDIY</tag>
+        <tag>CS106L</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CS50 Week3</title>
+    <url>/2025/10/31/CS50-Week3/</url>
+    <content><![CDATA[<h1 id="WEEK-3"><a href="#WEEK-3" class="headerlink" title="WEEK 3"></a>WEEK 3</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在CS50的第三周，我们主要了解到了三种算法：冒泡排序（bubble sort），选择排序（selection sort），以及归并排序（merge sort），还有递归的思想，并且对时间复杂度有了一个大概的了解。下面我们来总结一下这三种算法的特点以及代码实现。</p>
+<p>btw，其实在C++中，我们不用自己实现排序算法，因为C++已经内置了排序函数，也就是std::sort()，并且sort()使用的是快速排序算法，其时间复杂度为O(nlogn)。 </p>
+<h2 id="冒泡排序（Bubble-Sort）"><a href="#冒泡排序（Bubble-Sort）" class="headerlink" title="冒泡排序（Bubble Sort）"></a>冒泡排序（Bubble Sort）</h2><p>冒泡排序是一种简单的排序算法。主要思想是通过对相邻元素进行比较和交换，使得较大的元素逐渐向上移动，直到最后一个元素。</p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>时间复杂度：O(n^2)</li>
+<li>空间复杂度：O(1)</li>
+<li>稳定性：稳定</li>
+</ul>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">bubble_sort</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="type">int</span> i, j;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; n - i - <span class="number">1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &gt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="type">int</span> temp = arr[j];</span><br><span class="line">                arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">                arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="选择排序（Selection-Sort）"><a href="#选择排序（Selection-Sort）" class="headerlink" title="选择排序（Selection Sort）"></a>选择排序（Selection Sort）</h2><p>选择排序是一种简单直观的排序算法。主要思想是通过遍历数组，找到最小的元素，将其放在数组的第一个位置，然后再从剩下的元素中找到最小的元素，将其放在数组的第二个位置，以此类推。</p>
+<h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>时间复杂度：O(n^2)</li>
+<li>空间复杂度：O(1)</li>
+<li>稳定性：不稳定</li>
+</ul>
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">selection_sort</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="type">int</span> i, j, min_idx;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        min_idx = i;</span><br><span class="line">        <span class="keyword">for</span> (j = i + <span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[min_idx]) &#123;</span><br><span class="line">                min_idx = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;    </span><br><span class="line">        <span class="type">int</span> temp = arr[i];</span><br><span class="line">        arr[i] = arr[min_idx];</span><br><span class="line">        arr[min_idx] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="归并排序（Merge-Sort）"><a href="#归并排序（Merge-Sort）" class="headerlink" title="归并排序（Merge Sort）"></a>归并排序（Merge Sort）</h2><p>归并排序是一种分治法的排序算法。主要思想是将数组分成两半，分别排序，然后再将排序好的两半合并成一个有序数组。</p>
+<h3 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>时间复杂度：O(nlogn)</li>
+<li>空间复杂度：O(n)</li>
+<li>稳定性：稳定</li>
+</ul>
+<h3 id="代码实现-2"><a href="#代码实现-2" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">merge</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> l, <span class="type">int</span> m, <span class="type">int</span> r)</span> &#123;</span><br><span class="line">    <span class="type">int</span> i, j, k;</span><br><span class="line">    <span class="type">int</span> n1 = m - l + <span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> n2 = r - m;</span><br><span class="line">    <span class="type">int</span> L[n1], R[n2];</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n1; i++) &#123;</span><br><span class="line">        L[i] = arr[l + i];</span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; n2; j++) &#123;</span><br><span class="line">        R[j] = arr[m + <span class="number">1</span> + j];</span><br><span class="line">    &#125;    </span><br><span class="line">    i = <span class="number">0</span>;</span><br><span class="line">    j = <span class="number">0</span>;</span><br><span class="line">    k = l;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; n1 &amp;&amp; j &lt; n2) &#123;</span><br><span class="line">        <span class="keyword">if</span> (L[i] &lt;= R[j]) &#123;</span><br><span class="line">            arr[k] = L[i];</span><br><span class="line">            i++;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            arr[k] = R[j];</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        k++;</span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">while</span> (i &lt; n1) &#123;</span><br><span class="line">        arr[k] = L[i];</span><br><span class="line">        i++;</span><br><span class="line">        k++;</span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">while</span> (j &lt; n2) &#123;</span><br><span class="line">        arr[k] = R[j];</span><br><span class="line">        j++;</span><br><span class="line">        k++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">merge_sort</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> l, <span class="type">int</span> r)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (l &lt; r) &#123;</span><br><span class="line">        <span class="type">int</span> m = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">        merge_sort(arr, l, m);</span><br><span class="line">        merge_sort(arr, m + <span class="number">1</span>, r);</span><br><span class="line">        merge(arr, l, m, r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在Week3视频的最后，David通过动画演示直观地展现了三种排序算法的过程，可以很清晰地看到归并排序的时间是最快的，这主要是因为归并排序的分治法的思想，使得它可以将数组分成两半，分别排序，然后再将排序好的两半合并成一个有序数组，这样就使得时间复杂度降低到O(nlogn)。而选择排序和冒泡排序的时间复杂度都为O(n^2)，这主要是因为它们的比较和交换操作，使得它们的效率较低。<br>其实在写函数的时候，我们也可以利用递归思想，也就是分治法来优化代码，同样来自David，例如我们要写一个打印Mario里的砖块（阶梯型）的函数，我们可以这样思考：每次打印下一层时，其实就是比上一层砖块多了一个砖块。让我们来看看下面的代码。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">draw</span><span class="params">(<span class="type">int</span> n)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt;= <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    draw(n - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;#&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Programming</category>
+      </categories>
+      <tags>
+        <tag>CSDIY</tag>
+        <tag>CS50</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>近况-大一下总结</title>
+    <url>/2026/08/13/%E4%B8%80%E4%BA%9B%E6%83%B3%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="学校"><a href="#学校" class="headerlink" title="学校"></a>学校</h2><p>这个学期汲取了上学期的一些经验，在平时的时间里兼顾了一些课程的学习，这也让我的复习周的压力小了一点。<br>这学期就参加了一个大英赛，没有抱着获奖的心态去的，纯裸考反而得到了国三，虽然我还是感觉这个比赛水分很大，但起码这个奖让我英语课的平时分拉满了，还挺不错。<br>这个学期的主旋律感觉还是以提升绩点为主，但是如果看最后的成绩，好像没有特别大的进步，这学期绩点只有3.63，排名大概是进步了几名，主要是因为有好几门课的绩点都被卡了，<br>好多都是89分，差1分满绩，有点可惜。文史哲之类的课还是拉低我的绩点的主要课程，主要是不想花时间去背题库，大二还有一年的这种课，没办法，感觉只能顺从了。<br>这学期最大的一个推进就是通过院长张凯的介绍成功与徐新老师取得联系，早在开学之初，我就在学校官网上注意到了他，因为他的方向我比较感兴趣，并且他的实验室应该是学校里产出比较高的了，五月份的时候，我在他的办公室和他进行了第一次交谈，内容大概是希望我要先打好编程的基础，有相关比赛证明一下自己的能力，再进入实验室开展工作。回来以后，我就开始刷了一下leetcode，但是里面的东西还是和ACM培训里的差不多，做起来感觉回到了大一上学期的时候。</p>
+<h2 id="暑假"><a href="#暑假" class="headerlink" title="暑假"></a>暑假</h2><p>开始的半个月自然还是以放松为主了，月中的时候我去了一个暑假访学的项目，是去新加坡的NTU交流。<br>这是我第一次出国，一切都是新鲜的，新加坡这个城市很干净，还给我一种很神圣的感觉，也许这是一种赋魅吧。<br>在NTU的这几天，听了好几位教授的Lecture，其中有一位教授叫AnBo，可以在CSRanking里看到他在AI方面的研究贡献位居NTU前列，他和我们聊了聊关于当前和未来人工智能的发展还有对行业的冲击。提到了在中国有很多所谓教授的人，拿着国家的基金做着一些自娱自乐的东西，学校也开设很多所谓的夕阳专业，这个观点与我的想法很像，AI的冲击力可能远比我们想象的要大得多，或许AI的浪潮目前只是蓄势阶段，真正的高潮还远远没有到来。可能在十年以后，AI会成为人类生活不可或缺的一部分，那些无法接受这些事实的人将会被社会淘汰。<br>我觉得新加坡这一次学习可能在知识上没有特别大的收获，但是确确实实开拓了我的眼界，并且让我真的对这座城市有了向往。<br>值得一提的是，我在新加坡的舍友和我是校友，他也是计算机学院的，比我高一级。最让人惊讶的是，我在大一上学期听的国奖候选人答辩里正好他是其中之一，可以说是非常优秀了。<br>他告诉我他大一暑假就开始实习了，现在在学校老师那边做科研，并且成功套磁到了北大的一位老师。我把我的规划告诉他，他对此也表示肯定，还说要先去做，边做边学才行，没有人一开始就会。<br>这句话打动了我，确实，尽管我的想法十分长远甚至说很完善，但是目前也只是停留于想法，不敢去做，总是想着先学会了再去争取机会，这样太晚了就！<br>回国后，我把我的想法和爸妈说了下，我爸又和院长聊了聊，于是我又在微信电话里和徐新老师进行了第二次交流，这一次相比第一次要求更具体，他让我先学习一下D2L，然后就可以进组了，并且他在新加坡也有一些很好的connection，可以到时候帮助我套磁，或许大三可以有一个暑研的机会。这通电话以后，我的暑假就只有两个任务了：雅思和深度学习<br>———————————————————————————————————————————————————————————————————————<br>但是到了今天，我感觉压力好大啊，我要在国庆期间考雅思，最好是考到7分，这样就可以以90分免修英语了，可是我现在也就6分的水平，要想提分感觉还是要从听力阅读开始，<br>我在练习了一个星期多后已经有些疲惫了，状态也不太好，每天老是六点钟就醒过来了，不管我睡得有多么晚。深度学习的代码部分也比我想象的要难理解掌握。我现在有点焦虑了，<br>不知道雅思能不能考过，不知道深度学习能不能掌握好，整个人有点down了。写这篇文章，既是总结，也是对我现在的一个激励吧，希望这个暑假可以充实而有收获地结束。</p>
+]]></content>
+      <categories>
+        <category>Life</category>
+      </categories>
+      <tags>
+        <tag>Summary</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用 Mac 一个月后的感受</title>
+    <url>/2026/04/24/%E4%BD%BF%E7%94%A8%20Mac%20%E4%B8%80%E4%B8%AA%E6%9C%88%E5%90%8E%E7%9A%84%E6%84%9F%E5%8F%97/</url>
+    <content><![CDATA[<h2 id="Mac"><a href="#Mac" class="headerlink" title="Mac"></a>Mac</h2><h3 id="购买原因"><a href="#购买原因" class="headerlink" title="购买原因"></a>购买原因</h3><p>其实对于 MacBook ，我从大一上学期就一直很想买了，<br>主要理由就是：每次上C语言的时候，背着游戏本以及它的电源适配器，太太太太重了。并且如果我不带电脑的话，我就不是很想听课了，说实话，面对那清朝PPT和老师自顾自地讲课，没人喜欢听讲。</p>
+<p>我也想过用 iPad 配上键盘远程连接电脑来进行平替，但是受限于 iPad屏幕太小和键鼠响应有延迟，整体的体验并不是很好。</p>
+<p>直到今年清明节的时候，我发现最新款的 MacBook M5 最低只要6500，并且是 16G + 512G 版本，我瞬间就心动了。和家里人说了以后，他们也赞成我拿下，于是，我预支了五六七月份的生活费(寒假的压岁钱和生日收到的红包足以支持我活到这学期结束)，成功拥有了属于我的第一台 MacBook。</p>
+<h3 id="使用体验"><a href="#使用体验" class="headerlink" title="使用体验"></a>使用体验</h3><p>虽然说这学期的 C++ 还没有开始上，但是有一门由BCU外教开设的 innovative project. 所以这台 MacBook 还算是派上了点用场。<br>最直接的，我上课只用背着一台 Mac，就算要带上充电器也很轻，因为它的充电器和其他 Apple 产品一样。<br>然后让我感受最深的应该是它的触控板，它的触控板和 Win 系列产品的触控板确实不一样，手感非常好，反馈感可以说拉满了，我之前从来不用触控板的人，在使用 Mac 之后也是很快就上手了</p>
+<p>还有一点要说的就是：iOS生态<br>就我目前使用情况来说，最常用的应该就是 同步剪切板，在手机上复制剪切，Mac 上可以直接粘贴。这样就省去了比如说要通过QQ或者微信来中转的操作</p>
+]]></content>
+      <categories>
+        <category>Life</category>
+      </categories>
+      <tags>
+        <tag>Summary</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>大一上总结</title>
+    <url>/2026/01/19/%E5%A4%A7%E4%B8%80%E4%B8%8A%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h2 id="时间线"><a href="#时间线" class="headerlink" title="时间线"></a>时间线</h2><h3 id="初入大学"><a href="#初入大学" class="headerlink" title="初入大学"></a>初入大学</h3><p>高考失利，我怀着矛盾的心情踏入大学的校门，我既是因为进入这所在高中时期看不上的大学而心高气傲，又因为自己是以较低分数进入这所大学而自卑。<br>一开始，我并不喜欢这里的一切，我始终认为自己应该要站在更高的平台上，但是，经过入学的一系列“洗脑”宣传后，我慢慢接受了自己是这所大学的一份子，<br>开始继续对未来充满希望与憧憬。</p>
+<h3 id="前几个月"><a href="#前几个月" class="headerlink" title="前几个月"></a>前几个月</h3><p>军训完的国庆假期以后，我下定了一个决心：我要每天过得充实，我不要再沉迷游戏。<br>做出这个决定的原因有三个：</p>
+<ol>
+<li><p>我是真的想在本科时期做出一番成绩的；</p>
+</li>
+<li><p>高考完的暑假已经让我有一点“电子阳痿”了；</p>
+</li>
+<li><p>我对游戏的看法发生了改变，以前我对于游戏里的排名十分在意，但现在我只是把它当作与朋友联系的一个方式，自己一个人玩属实没啥意思。</p>
+</li>
+</ol>
+<p>在后面的两个多月，我真的如我所期望的那样，每天都在学习新知识，在学校OJ上刷题，在网上了解自己感兴趣的内容。<br>直到现在回想起来，我仍然感觉那是一段十分励志的经历。连高中同学都感叹：“夸张！”</p>
+<h3 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h3><p>最后还是没忍住啊，可恶，游戏慢慢地下回来了，好像又回到了高考完的暑假。就这样一直到了期末考试，幸好每科考试之间基本都有一两天间隔，我就通过这些间期临时抱佛脚，<br>目前的成绩还没完全出来，但我感觉已经和别人有了一点差距了。</p>
+<h2 id="一些总结感悟"><a href="#一些总结感悟" class="headerlink" title="一些总结感悟"></a>一些总结感悟</h2><p>在学习期间，我产生了一个苦恼的问题：我到底要不要在课下学一些与目前考试无关的知识？ 我对这些知识有着十分浓厚的兴趣，因此会深陷其中，但绩点成绩又在这一头拉着我，<br>我脑海里又想要去复习目前所学。于是最坏的结果发生了，我既没有学新知识，又没有好好认真复习，全扑到游戏里了。。。。</p>
+<p>这小半年的生活，让我稍微摸清了大学学习的门道，在接下来的日子里，我还是要多总结多反思，找到一个学习的平衡点，游戏如果不能完全放下，那至少也要多克制一会，<br>不能占据太多的注意力。</p>
+<p>大一下学期之后，课程就会开始多起来了，同时还有一些科研竞赛之类的活动，要抓紧了。</p>
+]]></content>
+      <categories>
+        <category>Life</category>
+      </categories>
+      <tags>
+        <tag>Summary</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>盛最多水的容器</title>
+    <url>/2026/04/14/%E7%9B%9B%E6%9C%80%E5%A4%9A%E6%B0%B4%E7%9A%84%E5%AE%B9%E5%99%A8/</url>
+    <content><![CDATA[<p>由于这道题目还是比较经典的，这里就不贴题目了</p>
+<p>这道题一开始肯定不难想到暴力解法————双for循环。<br>但是这样的话时间复杂度就来到了O(n^2),n稍微大一点就会超时。</p>
+<h2 id="双指针-贪心算法"><a href="#双指针-贪心算法" class="headerlink" title="双指针&amp;贪心算法"></a>双指针&amp;贪心算法</h2><p>这道题我们可以使用双指针的方法，让左右指针分别指向数组的左右两端，从而可以表示容器的左右高度以及宽度。<br>然后根据贪心算法的思想，每次向中间移动最低的的柱子，记录水量，等左右指针相遇则停止。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int maxArea(vector&lt;int&gt;&amp; height) &#123;</span><br><span class="line">        int n = height.size()-1;</span><br><span class="line">        int i = 0, j = n;</span><br><span class="line">        int sum = 0;</span><br><span class="line">        while(i &lt; j)&#123;</span><br><span class="line">            int len = j - i;</span><br><span class="line">            int cur = len * min(height[i], height[j]);</span><br><span class="line">            if(cur &gt; sum)&#123;</span><br><span class="line">                sum = cur;</span><br><span class="line">            &#125;</span><br><span class="line">            if(height[i] &lt; height[j])&#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;</span><br><span class="line">                j--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="一些思考"><a href="#一些思考" class="headerlink" title="一些思考"></a>一些思考</h2><p>在做这道题目的时候，去理解贪心算法是最关键的。<br>这就像是“木桶效应”，一个木桶能装多少水取决于短的那条边，而不是长的。<br>那么在这道题目里，如果宽度固定，那么容量就只和相对短的一边有关。如果我们去移动长边，那么容量一定不会有增加的可能，移动短边的话，容量就有概率变大。因此每次移动的时候，移动长边绝对是错误的选择，移动短边则是最优解（但并不代表移动短边后得到的容量比之前大）<br>一句话概括：我们 i++ 和 j– 都是为了尝试取到更多的水，如果短的边不动的话，取到的水永远不会比上次多。</p>
+]]></content>
+      <categories>
+        <category>Programming</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>Algorithms</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>贪心算法</title>
+    <url>/2025/11/14/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="贪心算法介绍"><a href="#贪心算法介绍" class="headerlink" title="贪心算法介绍"></a>贪心算法介绍</h2><p>贪心算法，顾名思义，就是采取贪心的策略去解决或者优化问题。其主要思想是：保证每次操作都是局部的最优解，从而得到全局最优解。（但其实从字面上来看，贪心显然不是一个好词，他仅仅局限于当下，而不是去纵观全局，因此，有时候贪心算法并不能得到全局最优解。）</p>
+<h2 id="贪心算法的思路"><a href="#贪心算法的思路" class="headerlink" title="贪心算法的思路"></a>贪心算法的思路</h2><p>我们首先肯定是要确定我们的贪心目标，比如性价比最高的商品，或者最短的时间，或者最少的钱。然后，我们按照这个目标，一步一步的进行贪心选择，直到我们达到目标。</p>
+<h2 id="贪心算法的应用"><a href="#贪心算法的应用" class="headerlink" title="贪心算法的应用"></a>贪心算法的应用</h2><h3 id="背包问题洛谷P2240"><a href="#背包问题洛谷P2240" class="headerlink" title="背包问题洛谷P2240"></a>背包问题<a href="https://www.luogu.com.cn/problem/P2240">洛谷P2240</a></h3><p>这里还是把题目写出来吧</p>
+<h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><p>阿里巴巴走进了装满宝藏的藏宝洞。藏宝洞里面有 $N(N \le 100)$ 堆金币，第 $i$ 堆金币的总重量和总价值分别是 $m_i,v_i(1\le m_i,v_i \le 100)$。阿里巴巴有一个承重量为 $T(T \le 1000)$ 的背包，但并不一定有办法将全部的金币都装进去。他想装走尽可能多价值的金币。所有金币都可以随意分割，分割完的金币重量价值比（也就是单位价格）不变。请问阿里巴巴最多可以拿走多少价值的金币？</p>
+<h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h4><p>第一行两个整数 $N,T$。</p>
+<p>接下来 $N$ 行，每行两个整数 $m_i,v_i$。</p>
+<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><p>一个实数表示答案，输出两位小数</p>
+<h4 id="输入输出样例-1"><a href="#输入输出样例-1" class="headerlink" title="输入输出样例 #1"></a>输入输出样例 #1</h4><h5 id="输入-1"><a href="#输入-1" class="headerlink" title="输入 #1"></a>输入 #1</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">4 50</span><br><span class="line">10 60</span><br><span class="line">20 100</span><br><span class="line">30 120</span><br><span class="line">15 45</span><br></pre></td></tr></table></figure>
+
+<h5 id="输出-1"><a href="#输出-1" class="headerlink" title="输出 #1"></a>输出 #1</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">240.00</span><br></pre></td></tr></table></figure>
+
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>注意到题目说了，所有金币都可以随意分割，分割完的金币重量价值比不变。因此，我们可以先对金币按照价值从小到大排序，然后从后往前遍历（为什么不从大到小排序呢？因为sort()函数默认是从小到大排序的，我比较懒），如果当前的金币的重量小于等于背包的容量，我们就把它装进去，并更新背包的容量和价值。如果当前的金币的重量大于背包的容量，我们就停止装了，因为装不下了。</p>
+<p>这里我们使用结构体来打包金币的信息，包括重量和价值以及性价比。<br>然后要写一个排序函数来告诉sort()函数我们要按照结构体中的价值进行排序。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Item</span> &#123;</span><br><span class="line">    <span class="type">int</span> weight;</span><br><span class="line">    <span class="type">int</span> value;</span><br><span class="line">    <span class="type">double</span> ratio;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">cmp</span><span class="params">(Item a, Item b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.ratio &gt; b.ratio;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>感觉这一步应该是最关键的，也是最麻烦的（对于一个rookie来说）。</p>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Item</span> &#123;</span><br><span class="line">    <span class="type">int</span> weight;</span><br><span class="line">    <span class="type">int</span> value;</span><br><span class="line">    <span class="type">double</span> ratio;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">cmp</span><span class="params">(Item a, Item b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.ratio &gt; b.ratio;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> N, T;</span><br><span class="line">    cin &gt;&gt; N &gt;&gt; T;</span><br><span class="line">    <span class="function">vector&lt;Item&gt; <span class="title">items</span><span class="params">(N)</span></span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">        cin &gt;&gt; items[i].weight &gt;&gt; items[i].value;</span><br><span class="line">        items[i].ratio = (<span class="type">double</span>)items[i].value / items[i].weight;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(items.<span class="built_in">begin</span>(), items.<span class="built_in">end</span>(),cmp);</span><br><span class="line">    <span class="type">double</span> total = <span class="number">0.0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; N &amp;&amp; T &gt; <span class="number">0</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (items[i].weight &lt;= T) &#123;</span><br><span class="line">            total += items[i].value;</span><br><span class="line">            T -= items[i].weight;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            total += items[i].ratio * T;</span><br><span class="line">            T = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%.2f\n&quot;</span>, total);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Programming</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>Algorithms</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何用hexo搭建一个个人博客</title>
+    <url>//blog/how-to-build-a-personal-blog-with-hexo/</url>
+    <content><![CDATA[<h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>其实关于博客的搭建我花了不少时间，在网上搜集查找了很多文章，期间还向AI请教了一下，前前后后差不多有两天吧，问题主要出现在了一些文件的配置上，所以借此机会，整理一下自己的经验，希望能帮助到大家。  </p>
+<h2 id="2-准备工作"><a href="#2-准备工作" class="headerlink" title="2.准备工作"></a>2.准备工作</h2><p>由于我使用的是Windows系统，所以以下操作均在Windows环境下进行。  </p>
+<h3 id="2-1-安装Node"><a href="#2-1-安装Node" class="headerlink" title="2.1 安装Node"></a>2.1 安装Node</h3><p>打开<a href="https://nodejs.org/en/download/">Node官网</a>，下载与你的系统适配的安装程序，版本的话可以是选择低一点的，不然可能会出现不兼容的问题。<br>安装完成后记得检查一下是否安装成功。键盘按下win+R，输入cmd，打开命令行窗口，输入以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">node -v</span><br></pre></td></tr></table></figure>
+
+<p>如果出现版本号，则说明安装成功。</p>
+<h3 id="2-2-安装Git"><a href="#2-2-安装Git" class="headerlink" title="2.2 安装Git"></a>2.2 安装Git</h3><ol>
+<li>打开<a href="https://git-scm.com/downloads">Git官网</a>下载安装程序。  </li>
+<li>点击电脑开始菜单，我们可以看见<mark>Git Bash</mark>。等会我们会一直用到它。</li>
+</ol>
+<h3 id="2-3-安装Hexo"><a href="#2-3-安装Hexo" class="headerlink" title="2.3 安装Hexo"></a>2.3 安装Hexo</h3><ol>
+<li>在<mark>Git Bash</mark>中输入以下命令：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装完成后，输入以下命令：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo -v</span><br></pre></td></tr></table></figure>
+
+<p>如果出现版本号，则说明安装成功。</p>
+<h3 id="2-4-创建Github仓库-首先要确保你已经注册了Github账号"><a href="#2-4-创建Github仓库-首先要确保你已经注册了Github账号" class="headerlink" title="2.4 创建Github仓库(首先要确保你已经注册了Github账号)"></a>2.4 创建Github仓库(首先要确保你已经注册了Github账号)</h3><ol>
+<li>打开<a href="https://github.com/">Github</a>，点击右上角的<mark>+ New repository</mark>，创建一个<mark>&lt;用户名&gt;.github.io</mark>的仓库，其中&lt;用户名&gt;是你的Github用户名。  </li>
+<li>勾选<mark>Initialize this repository with a README</mark>，然后点击<mark>Create repository</mark>。</li>
+</ol>
+<h2 id="3-配置用户名和邮箱"><a href="#3-配置用户名和邮箱" class="headerlink" title="3.配置用户名和邮箱"></a>3.配置用户名和邮箱</h2><p>在<mark>Git Bash</mark>中输入以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;你的用户名&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;你的邮箱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>通过</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config -l</span><br></pre></td></tr></table></figure>
+<p>检查一下是否配置成功。</p>
+<h2 id="4-连接Github仓库"><a href="#4-连接Github仓库" class="headerlink" title="4.连接Github仓库"></a>4.连接Github仓库</h2><ol>
+<li>进入任意文件夹，打开<mark>Git Bash</mark>。<br>输入以下命令：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;你的邮箱&quot;</span></span><br></pre></td></tr></table></figure>
+<p>然后回车，一路回车，直到生成完毕。<br>然后进入C:\Users\用户名，在里面进入.ssh文件<br>用记事本打开里面的id_rsa.pub,全选复制里面的代码</p>
+<ol start="2">
+<li><p>回到Github，点击右上角的<mark>Settings</mark>，然后点击<mark>SSH and GPG keys</mark>，点击<mark>New SSH key</mark>，把刚才复制的代码粘贴进去，点击<mark>Add SSH key</mark>。</p>
+</li>
+<li><p>回到<mark>Git Bash</mark>测试是否成功，输入以下命令：</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+<p>回车，然后输入yes</p>
+<h2 id="5-本地生成博客"><a href="#5-本地生成博客" class="headerlink" title="5.本地生成博客"></a>5.本地生成博客</h2><p>在喜欢的位置新建一个文件夹，然后在<mark>Git Bash</mark>中输入以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+<p>如果‘command not find’，就在前面加上npx，比如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx hexo init</span><br></pre></td></tr></table></figure>
+<p>然后</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo install</span><br></pre></td></tr></table></figure>
+<p>再依次输入以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>如果不成功就看看是不是梯子忘记关了，或者问问AI。</p>
+<p>然后就可以复制生成的链接，在浏览器中打开，就可以看到自己的博客了。</p>
+<p>接着回到命令行，Ctrl+C停止hexo s。</p>
+<h2 id="6-部署博客"><a href="#6-部署博客" class="headerlink" title="6.部署博客"></a>6.部署博客</h2><p>进入到博客文件夹，用VSCode打开_config.yml<br>拉到最下面，将deploy下面的删掉，复制粘贴以下代码：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">repo:</span> </span><br><span class="line"><span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+<p>把你在Github上创建的仓库地址粘贴到repo后面，然后保存(记得有一个空格)。然后保存退出。</p>
+<p>回到博客文件夹，输入以下命令安装自动部署发布工具：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>再输入</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>如果你是第一次部署，会提示你输入Github的用户名和密码<br>在命令行中输入</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.email <span class="string">&quot;你的邮箱&quot;</span></span><br><span class="line">git config --global user.name <span class="string">&quot;你的名字&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后再输入</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+<hr>
+<p>就完成了，打开浏览器输入你的博客地址，就可以看到自己的博客了。网址就是你在Github上创建的仓库地址<br>https:&#x2F;&#x2F;&lt;用户名&gt;.github.io&#x2F;。<br>至此，我们就完成了最基本的博客搭建，虽然看起来有点简陋。。。。。<br>关于Vercel部署与自定义域名还有美化博客的教程，可以看看<a href="https://www.fomal.cc/categories/%E9%AD%94%E6%94%B9%E6%95%99%E7%A8%8B/">https://www.fomal.cc/categories/%E9%AD%94%E6%94%B9%E6%95%99%E7%A8%8B/</a><br>当然你也可以去B站、知乎等平台上找找别人的教程。</p>
+]]></content>
+      <categories>
+        <category>Notes</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>过河卒</title>
+    <url>/2025/11/14/%E8%BF%87%E6%B2%B3%E5%8D%92/</url>
+    <content><![CDATA[<h2 id="题目来源：洛谷P1002"><a href="#题目来源：洛谷P1002" class="headerlink" title="题目来源：洛谷P1002"></a>题目来源：<a href="https://www.luogu.com.cn/problem/P1002">洛谷P1002</a></h2><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>棋盘上 $A$ 点有一个过河卒，需要走到目标 $B$ 点。卒行走的规则：可以向下、或者向右。同时在棋盘上 $C$ 点有一个对方的马，该马所在的点和所有跳跃一步可达的点称为对方马的控制点。因此称之为“马拦过河卒”。</p>
+<p>棋盘用坐标表示，$A$ 点 $(0, 0)$、$B$ 点 $(n, m)$，同样马的位置坐标是需要给出的。</p>
+<p><img src="/images/%E8%BF%87%E6%B2%B3%E5%8D%92.png" alt="题目图片"></p>
+<p>现在要求你计算出卒从 $A$ 点能够到达 $B$ 点的路径的条数，假设马的位置是固定不动的，并不是卒走一步马走一步。</p>
+<h2 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h2><p>一行四个正整数，分别表示 $B$ 点坐标和马的坐标。</p>
+<h2 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h2><p>一个整数，表示所有的路径条数。</p>
+<h2 id="输入输出样例-1"><a href="#输入输出样例-1" class="headerlink" title="输入输出样例 #1"></a>输入输出样例 #1</h2><h3 id="输入-1"><a href="#输入-1" class="headerlink" title="输入 #1"></a>输入 #1</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">6 6 3 3</span><br></pre></td></tr></table></figure>
+
+<h3 id="输出-1"><a href="#输出-1" class="headerlink" title="输出 #1"></a>输出 #1</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">6</span><br></pre></td></tr></table></figure>
+
+<h2 id="说明-提示"><a href="#说明-提示" class="headerlink" title="说明&#x2F;提示"></a>说明&#x2F;提示</h2><p>对于 $100 %$ 的数据，$1 \le n, m \le 20$，$0 \le$ 马的坐标 $\le 20$。</p>
+<h2 id="大概思路"><a href="#大概思路" class="headerlink" title="大概思路"></a>大概思路</h2><p>这里我们先忽略马的控制点，只讨论卒从A点运动到B点的路径条数。</p>
+<p>不难发现，如果B点与A点在同一条直线上，那么卒的路径就只有一条。</p>
+<p>现在假设B点坐标为$(1,1)$,那路径是不是有两条？一个是先向下再向右，另一个是先向右再向下。</p>
+<p>如果B点坐标为$(1,2)$,那路径有多少条？<br>自己画一下，是不是有三条？</p>
+<p>B点坐标为$(2,1)$呢？</p>
+<p>欸，这时我们可以发现一个规律：</p>
+<p>如果B点坐标为$(x,y)$,那么卒的路径条数为他到$(x-1,y)$的路径条数加上他到$(x,y-1)$的路径条数。</p>
+<p>有没有发现这很像我们在高中时做的数学概率题目？我们只需要每次考虑结果的上一步。</p>
+<p>那么此时的代码应该是：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> n, m, x, y;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; m &gt;&gt; x &gt;&gt; y;</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> a[<span class="number">30</span>][<span class="number">30</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= m; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i == <span class="number">0</span> &amp;&amp; j == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(i == <span class="number">0</span> || j == <span class="number">0</span>)&#123;</span><br><span class="line">                a[i][j] = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                a[i][j] = a[i<span class="number">-1</span>][j] + a[i][j<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; a[n][m] &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好，下面我们再把马的控制点考虑进来</p>
+<p>首先肯定要标记出马的控制点，我们可以先把二维数组中所有的元素都赋值为1，然后再手动把马的控制点的坐标标记为0（听起来有点苕）。<br>另外，要注意马的控制点是否在棋盘上面！</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">long</span> <span class="type">long</span> n, m, x, y;</span><br><span class="line">cin &gt;&gt; n &gt;&gt; m &gt;&gt; x &gt;&gt; y;</span><br><span class="line"><span class="type">long</span> <span class="type">long</span> a[<span class="number">30</span>][<span class="number">30</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= n; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= m; j++) &#123;</span><br><span class="line">        a[i][j] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">a[x][y] = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span>(x + <span class="number">2</span> &lt;= n &amp;&amp; y - <span class="number">1</span> &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">    a[x<span class="number">+2</span>][y<span class="number">-1</span>] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(x + <span class="number">2</span> &lt;= n &amp;&amp; y + <span class="number">1</span> &lt;= m)&#123;</span><br><span class="line">    a[x<span class="number">+2</span>][y<span class="number">+1</span>] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(x - <span class="number">2</span> &gt;= <span class="number">0</span> &amp;&amp; y - <span class="number">1</span> &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">    a[x<span class="number">-2</span>][y<span class="number">-1</span>] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(x - <span class="number">2</span> &gt;= <span class="number">0</span> &amp;&amp; y + <span class="number">1</span> &lt;= m)&#123;</span><br><span class="line">    a[x<span class="number">-2</span>][y<span class="number">+1</span>] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(x - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; y - <span class="number">2</span> &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">    a[x<span class="number">-1</span>][y<span class="number">-2</span>] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(x - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; y + <span class="number">2</span> &lt;= m)&#123;</span><br><span class="line">    a[x<span class="number">-1</span>][y<span class="number">+2</span>] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(x + <span class="number">1</span> &lt;= n &amp;&amp; y - <span class="number">2</span> &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">    a[x<span class="number">+1</span>][y<span class="number">-2</span>] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(x + <span class="number">1</span> &lt;= n &amp;&amp; y + <span class="number">2</span> &lt;= m)&#123;</span><br><span class="line">    a[x<span class="number">+1</span>][y<span class="number">+2</span>] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在遍历数组的时候，如果数组元素为0，即遇到马的控制点，就要跳过这个点，不进行路径计数。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= n; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= m; j++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(i == <span class="number">0</span> &amp;&amp; j == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(a[i][j] == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们接着用相同的方法找一下规律，<br>当B点在第一列或者第一行时，他的路径条数等于他的上面或者左边的路径条数。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(i == <span class="number">0</span>)&#123;</span><br><span class="line">    a[i][j] = a[i][j<span class="number">-1</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(j == <span class="number">0</span>)&#123;</span><br><span class="line">    a[i][j] = a[i<span class="number">-1</span>][j];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当B点在第一列或者第一行以外时，他的路径条数等于他的上面或者左边的路径条数加上他的左上角的路径条数。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    a[i][j] = a[i<span class="number">-1</span>][j] + a[i][j<span class="number">-1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> n, m, x, y;</span><br><span class="line">    cin &gt;&gt; n &gt;&gt; m &gt;&gt; x &gt;&gt; y;</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> a[<span class="number">30</span>][<span class="number">30</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= m; j++) &#123;</span><br><span class="line">            a[i][j] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    a[x][y] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(x + <span class="number">2</span> &lt;= n &amp;&amp; y - <span class="number">1</span> &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">        a[x<span class="number">+2</span>][y<span class="number">-1</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(x + <span class="number">2</span> &lt;= n &amp;&amp; y + <span class="number">1</span> &lt;= m)&#123;</span><br><span class="line">        a[x<span class="number">+2</span>][y<span class="number">+1</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(x - <span class="number">2</span> &gt;= <span class="number">0</span> &amp;&amp; y - <span class="number">1</span> &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">        a[x<span class="number">-2</span>][y<span class="number">-1</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(x - <span class="number">2</span> &gt;= <span class="number">0</span> &amp;&amp; y + <span class="number">1</span> &lt;= m)&#123;</span><br><span class="line">        a[x<span class="number">-2</span>][y<span class="number">+1</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(x - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; y - <span class="number">2</span> &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">        a[x<span class="number">-1</span>][y<span class="number">-2</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(x - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; y + <span class="number">2</span> &lt;= m)&#123;</span><br><span class="line">        a[x<span class="number">-1</span>][y<span class="number">+2</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(x + <span class="number">1</span> &lt;= n &amp;&amp; y - <span class="number">2</span> &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">        a[x<span class="number">+1</span>][y<span class="number">-2</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(x + <span class="number">1</span> &lt;= n &amp;&amp; y + <span class="number">2</span> &lt;= m)&#123;</span><br><span class="line">        a[x<span class="number">+1</span>][y<span class="number">+2</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= m; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i == <span class="number">0</span> &amp;&amp; j == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(a[i][j] == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(i == <span class="number">0</span>)&#123;</span><br><span class="line">                a[i][j] = a[i][j<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(j == <span class="number">0</span>)&#123;</span><br><span class="line">                a[i][j] = a[i<span class="number">-1</span>][j];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                a[i][j] = a[i<span class="number">-1</span>][j] + a[i][j<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; a[n][m] &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Programming</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>Algorithms</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>递归函数</title>
+    <url>/2025/11/13/%E9%80%92%E5%BD%92/</url>
+    <content><![CDATA[<h2 id="递归函数"><a href="#递归函数" class="headerlink" title="递归函数"></a>递归函数</h2><p>递归函数，简单来说就是函数自己调用自己。可能有点抽象，那我们直接上代码吧。</p>
+<p>现在我们要写一个等差数列的函数，首项是1，公差是3，怎么用递归函数来实现呢？</p>
+<p>首先，我们定义的这个函数很显然有返回值，然后再观察等差数列的性质：后一项与前一项的差等于公差。我们先写一个大概的函数框架：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">f</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> result;</span><br><span class="line">    result = <span class="built_in">f</span>(n<span class="number">-1</span>) + <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们先来举个例子，要求第四项是多少，我们就要知道第三项是多少，以此类推……直到我们要知道第一项是多少。好，然后我们要怎么知道第一项是多少呢？如果你还类推那你可能不适合学递归函数。直接给他一个首项啊！</p>
+<p>所以完整的递归函数代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">f</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> result;</span><br><span class="line">    <span class="keyword">if</span>(n == <span class="number">1</span>)&#123;</span><br><span class="line">        result = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        result = <span class="built_in">f</span>(n<span class="number">-1</span>) + <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;   </span><br></pre></td></tr></table></figure>
+<h2 id="递归函数的缺陷"><a href="#递归函数的缺陷" class="headerlink" title="递归函数的缺陷"></a>递归函数的缺陷</h2><p>这里我们引入斐波那契数列的问题，我们知道斐波那契数列的特点是：f(n) &#x3D; f(n-1) + f(n-2)，其中f(1) &#x3D; 1，f(2) &#x3D; 1。<br>用脑子思考模拟一下刚才学的递归函数，你会发现，这个函数的缺陷在于它会重复计算相同的子问题，导致效率低下。</p>
+<p>怕你不明白，我们来看看：<br>假设你要求f(5),你是不是要先计算f(4)和f(3)呢？，你求f(4)的时候又要计算f(3)和f(2),OK,这里就可以看到，我们重复计算了f(3)，如果你自己用递归函数在编译器里运行，当n足够大的时候，你会发现到后面要花很长时间才会算出一项。</p>
+<h2 id="递推算法"><a href="#递推算法" class="headerlink" title="递推算法"></a>递推算法</h2><p>那怎么办呢？我们可以用另一种方法，叫做“递推算法”，简单一点，就是我们可以用for循环计算每一项，然后把结果存入数组，这样就不用重复计算了。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">f</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a[<span class="number">1000</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    a[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">    a[<span class="number">2</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">3</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        a[i] = a[i<span class="number">-1</span>] + a[i<span class="number">-2</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a[n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你可能有疑问：</p>
+<p>1.为什么要先定义数组里的元素都为0呢？</p>
+<p>因为如果不定义的话，空数组里的元素是不知道的，是随机的的，也就是垃圾值，有时候会影响结果。</p>
+<p>2.a[0]怎么不用？</p>
+<p>只是为了方便计算，我们把数组的下标从1开始，所以a[0]是没有用的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>递归适合表达能够被拆成相同子问题的结构，但它不一定比循环更高效。如果递归过程中重复计算相同的子问题，运行时间会明显增加。递推算法可以从已知结果出发逐步计算后续结果，避免这里的重复计算。</p>
+<p>怕你不懂，下一次我们找几道题目来练习一下。</p>
+]]></content>
+      <categories>
+        <category>Programming</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>Algorithms</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>递归解决汉诺塔</title>
+    <url>/2025/11/15/%E9%80%92%E5%BD%92%E8%A7%A3%E5%86%B3%E6%B1%89%E8%AF%BA%E5%A1%94/</url>
+    <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>汉诺塔由三根柱子（分别用A、B、C表示）和n个大小互不相同的空心盘子组成。一开始n个盘子都摞在柱子A上，大的在下面，小的在上面，形成了一个塔状的锥形体。<br>对汉诺塔的一次合法的操作是指：从一根柱子的最上层拿一个盘子放到另一根柱子的最上层，同时要保证被移动的盘子一定放在比它更大的盘子上面（如果移动到空柱子上就不需要满足这个要求）。我们可以用两个字母来描述一次操作：第一个字母代表起始柱子，第二个字母代表目标柱子。例如，AB就是把柱子A最上面的那个盘子移到柱子B。汉诺塔的游戏目标是将所有的盘子从柱子A移动到柱子C上面。<br>计算汉诺塔移动所需要的最少步骤数。</p>
+<p><img src="/images/%E6%B1%89%E8%AF%BA%E5%A1%94.png" alt="汉诺塔结构示意图"></p>
+<h2 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h2><p>输入一个整数n（1≤n≤30），代表盘子的个数。</p>
+<h2 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h2><p>输出每一步操作的方法，最后输出一个数，这个数表示移动的次数。我们保证答案不会超过10的18次方。</p>
+<h2 id="输入输出样例-1"><a href="#输入输出样例-1" class="headerlink" title="输入输出样例 #1"></a>输入输出样例 #1</h2><h3 id="输入-1"><a href="#输入-1" class="headerlink" title="输入 #1"></a>输入 #1</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<h3 id="输出-1"><a href="#输出-1" class="headerlink" title="输出 #1"></a>输出 #1</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Move disk 1 from A to C</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<h2 id="输入输出样例-2"><a href="#输入输出样例-2" class="headerlink" title="输入输出样例 #2"></a>输入输出样例 #2</h2><h3 id="输入-2"><a href="#输入-2" class="headerlink" title="输入 #2"></a>输入 #2</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<h3 id="输出-2"><a href="#输出-2" class="headerlink" title="输出 #2"></a>输出 #2</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Move disk 1 from A to B</span><br><span class="line">Move disk 2 from A to C</span><br><span class="line">Move disk 1 from B to C</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>这里我们先约定一下，要被执行操作的圆盘所在柱子的编号为$source$，目标柱子的编号为$target$，而另外一个柱子的编号为$temp$。</p>
+<p>我们从$n&#x3D;1$开始分析：</p>
+<ul>
+<li>此时，只需要把唯一的圆盘从$source$移动到$target$即可。</li>
+<li>步数为$1$。</li>
+</ul>
+<p>$n&#x3D;2$时：</p>
+<ul>
+<li>先把$1$从$source$移动到$temp$。</li>
+<li>再把$2$从$source$移动到$target$。</li>
+<li>最后把$1$从$temp$移动到$target$。</li>
+<li>步数为$3$。</li>
+</ul>
+<p>$n&#x3D;3$时：</p>
+<ul>
+<li>先把除了$3$以外的圆盘从$source$移动到$temp$。</li>
+<li>再把$3$从$source$移动到$target$。</li>
+<li>最后把剩余的圆盘从$temp$移动到$target$。</li>
+<li>步数为$3+1+3&#x3D;7$。</li>
+</ul>
+<p>好，我们来找一下规律：<br>是不是对于$n$个圆盘，我们可以先把除了$n$以外的圆盘从$source$移动到$temp$，再把$n$从$source$移动到$target$，最后把剩余的圆盘从$temp$移动到$target$？一共就这大的三步，而且第一步和最后一步的步数相同，第二步的步数为$1$。</p>
+<p>对于第一步和最后一步，不就等效于$n-1$个圆盘的移动步数吗？<br>因为$n$始终在最下面，不会影响到其他圆盘的移动。我们在分析$n-1$个圆盘的移动步数时，就可以直接忽略掉$n$。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">hanoi</span><span class="params">(<span class="type">int</span> n, <span class="type">char</span> source, <span class="type">char</span> temp, <span class="type">char</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">1</span>) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;Move disk 1 from &quot;</span> &lt;&lt; source &lt;&lt; <span class="string">&quot; to &quot;</span> &lt;&lt; target &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将除了n以外的圆盘从source移动到temp</span></span><br><span class="line">    <span class="built_in">hanoi</span>(n<span class="number">-1</span>, source, target, temp);</span><br><span class="line">    <span class="comment">//将n从source移动到target</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Move disk &quot;</span> &lt;&lt; n &lt;&lt; <span class="string">&quot; from &quot;</span> &lt;&lt; source &lt;&lt; <span class="string">&quot; to &quot;</span> &lt;&lt; target &lt;&lt; endl;</span><br><span class="line">    <span class="comment">//将剩余的圆盘从temp移动到target</span></span><br><span class="line">    <span class="built_in">hanoi</span>(n<span class="number">-1</span>, temp, source, target);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    <span class="comment">//假设柱子用A、B、C表示</span></span><br><span class="line">    <span class="built_in">hanoi</span>(n, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="一些思考"><a href="#一些思考" class="headerlink" title="一些思考"></a>一些思考</h2><p>如果你每次学完汉诺塔问题，过一段时间后就又写不出来了。这在一定程度上不是你的问题，汉诺塔问题有它的特殊性。<br>特殊点在于“不可人脑模拟”<br>一般人的大脑无法模拟汉诺塔问题中的的全部移动过程（格式大于等于4就不行）。<br>这会导致人的心里非常没底。<br>由于无法模拟，<br>所以只能把希望全部放在子问题的定义和描述上。只能通过子问题的定义和描述来解决问题。</p>
+]]></content>
+      <categories>
+        <category>Programming</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>Algorithms</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/self.css</url>
+    <content><![CDATA[:root,
+[data-theme='dark'],
+[data-theme='light'] {
+  --mimo-black: #050505;
+  --mimo-ink: #111111;
+  --mimo-paper: #f4f1ea;
+  --mimo-paper-soft: #ebe6dc;
+  --mimo-line: rgba(17, 17, 17, 0.18);
+  --mimo-line-strong: rgba(17, 17, 17, 0.42);
+  --mimo-muted: rgba(17, 17, 17, 0.58);
+  --mimo-invert-muted: rgba(244, 241, 234, 0.58);
+  --mimo-invert-line: rgba(244, 241, 234, 0.2);
+  --mimo-width: 1180px;
+  --mimo-nav-height: 72px;
+  --theme-color: #111111;
+}
+
+html {
+  background: var(--mimo-paper) !important;
+}
+
+body {
+  background: var(--mimo-paper) !important;
+  color: var(--mimo-ink);
+  font-family: "Avenir Next", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", sans-serif;
+}
+
+body {
+  letter-spacing: 0;
+}
+
+body.mimo-mode {
+  background: var(--mimo-paper) !important;
+  overflow-x: hidden;
+}
+
+#web_bg {
+  background:
+    linear-gradient(90deg, rgba(17, 17, 17, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(17, 17, 17, 0.03) 1px, transparent 1px),
+    var(--mimo-paper) !important;
+  background-size: 96px 96px, 96px 96px, auto !important;
+}
+
+#body-wrap {
+  background: transparent !important;
+}
+
+#page-header,
+#page-header.not-top-img,
+#page-header.full_page {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#page-header::before,
+#page-header.post-bg::before {
+  display: none !important;
+}
+
+#page-header #nav,
+#page-header.nav-fixed #nav {
+  width: min(var(--mimo-width), calc(100% - 32px));
+  height: var(--mimo-nav-height);
+  margin: 14px auto 0;
+  padding: 0;
+  border: 1px solid var(--mimo-line);
+  border-radius: 0;
+  background: rgba(244, 241, 234, 0.88) !important;
+  box-shadow: none;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+#nav #blog-info,
+#nav #menus {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#nav .site-name,
+#nav .menus_items .menus_item > a,
+#nav #toggle-menu .site-page,
+#nav #search-button .site-page {
+  color: var(--mimo-ink) !important;
+  font-family: "Avenir Next", "Helvetica Neue", "PingFang SC", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+#nav .site-name {
+  padding-left: 18px;
+  font-weight: 700;
+}
+
+#nav .menus_items .menus_item > a {
+  padding: 0 12px;
+}
+
+#nav .fa-fw,
+#sidebar .fa-fw,
+#rightside .fas,
+#rightside .fa-solid {
+  display: none !important;
+}
+
+#page-header #site-info {
+  width: min(var(--mimo-width), calc(100% - 32px));
+  margin: 0 auto;
+  padding-top: 132px;
+  text-align: left;
+}
+
+#page-header #site-title,
+#page-header .title-seo {
+  color: var(--mimo-ink) !important;
+  font-size: 56px !important;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+#page-header #site-subtitle {
+  color: var(--mimo-muted) !important;
+}
+
+.layout {
+  width: min(var(--mimo-width), calc(100% - 32px)) !important;
+  max-width: var(--mimo-width) !important;
+  margin: 0 auto !important;
+  padding: 112px 0 72px !important;
+}
+
+#aside-content,
+#rightside-config-hide {
+  display: none !important;
+}
+
+.layout.hide-aside,
+.layout > div:first-child {
+  width: 100% !important;
+}
+
+#recent-posts,
+#archive,
+#tag,
+#category,
+#page,
+#post {
+  width: 100% !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+#recent-posts > .recent-post-items {
+  display: block !important;
+}
+
+#recent-posts > .recent-post-items > .recent-post-item,
+#recent-posts > .recent-post-item,
+.article-sort-item,
+#tag .article-sort-item,
+#category .article-sort-item {
+  min-height: 132px;
+  margin: 0 !important;
+  padding: 24px 0 !important;
+  border-top: 1px solid var(--mimo-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: grid !important;
+  grid-template-columns: 96px minmax(0, 1fr) 72px;
+  gap: 24px;
+  align-items: start;
+}
+
+#recent-posts > .recent-post-items > .recent-post-item::before,
+#recent-posts > .recent-post-item::before {
+  content: counter(mimo-post, decimal-leading-zero);
+  counter-increment: mimo-post;
+  color: var(--mimo-muted);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+#recent-posts > .recent-post-items {
+  counter-reset: mimo-post;
+}
+
+#recent-posts .post_cover {
+  display: none !important;
+}
+
+#recent-posts .recent-post-info,
+#recent-posts .recent-post-info.no-cover {
+  padding: 0 !important;
+}
+
+#recent-posts .article-title,
+#recent-posts a.article-title,
+.article-sort-item-title {
+  color: var(--mimo-ink) !important;
+  font-size: 24px !important;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-decoration: none !important;
+}
+
+#recent-posts .article-title:hover,
+.article-sort-item-title:hover,
+a:hover {
+  color: var(--mimo-muted) !important;
+}
+
+#recent-posts .article-meta-wrap,
+#recent-posts .content,
+.article-sort-item-time,
+.article-meta-wrap,
+.post-meta-date,
+.article-meta,
+.article-meta a {
+  color: var(--mimo-muted) !important;
+  font-size: 13px !important;
+  line-height: 1.8;
+}
+
+#recent-posts .content {
+  max-width: 740px;
+  margin-top: 10px;
+}
+
+.article-sort-title,
+#page h1,
+#post h1,
+#page h2,
+#post h2,
+#page h3,
+#post h3,
+#page h4,
+#post h4,
+#page h5,
+#post h5,
+#page h6,
+#post h6 {
+  color: var(--mimo-ink) !important;
+  font-family: "Avenir Next", "Helvetica Neue", "PingFang SC", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.article-sort-title {
+  margin: 0 0 28px !important;
+  padding: 0 !important;
+  font-size: 48px !important;
+  line-height: 1.05;
+}
+
+#article-container,
+.post-content {
+  color: var(--mimo-ink);
+  font-size: 17px;
+  line-height: 1.95;
+}
+
+#article-container p,
+#article-container li,
+#page p,
+#page li {
+  color: rgba(17, 17, 17, 0.78);
+}
+
+#article-container a,
+#page a,
+#post a {
+  color: var(--mimo-ink);
+  border-bottom: 1px solid var(--mimo-line-strong);
+  text-decoration: none;
+}
+
+#post > #post-info #post-meta,
+#post > #post-info #post-meta a {
+  color: rgba(17, 17, 17, 0.68) !important;
+}
+
+#article-container blockquote {
+  border-left-color: var(--mimo-line-strong);
+  background: var(--mimo-paper-soft);
+  color: rgba(17, 17, 17, 0.78);
+}
+
+#article-container blockquote p,
+#article-container blockquote li {
+  color: rgba(17, 17, 17, 0.78);
+}
+
+#article-container :not(pre) > code {
+  background: rgba(17, 17, 17, 0.08);
+  color: #7a2f2a;
+}
+
+#article-container figure.highlight,
+#article-container pre,
+#article-container .highlight {
+  border-radius: 0 !important;
+  border: 1px solid var(--mimo-line) !important;
+  background: #111111 !important;
+}
+
+.tag_share,
+.post-copyright,
+.relatedPosts,
+#pagination,
+.pagination {
+  border-top: 1px solid var(--mimo-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#post .tag_share .post-meta__tags,
+#post .post-copyright .post-copyright-meta {
+  color: var(--mimo-ink) !important;
+}
+
+#post .tag_share .post-meta__tags {
+  border-color: var(--mimo-line-strong) !important;
+}
+
+#post .tag_share .post-meta__tags:hover {
+  background: var(--mimo-ink) !important;
+  color: var(--mimo-paper) !important;
+}
+
+#post .post-copyright::before {
+  color: var(--mimo-ink) !important;
+}
+
+#footer {
+  background: var(--mimo-black) !important;
+  color: var(--mimo-paper) !important;
+  border-top: 1px solid var(--mimo-invert-line);
+}
+
+#footer a,
+#footer .footer-separator,
+#footer .framework-info {
+  color: var(--mimo-invert-muted) !important;
+}
+
+/* Home */
+.mimo-mode #page-header,
+.mimo-mode #nav,
+.mimo-mode #sidebar,
+.mimo-mode #aside-content,
+.mimo-mode #rightside,
+.mimo-mode #footer {
+  display: none !important;
+}
+
+.mimo-mode #web_bg {
+  background: var(--mimo-paper) !important;
+}
+
+.mimo-mode #body-wrap {
+  width: 100vw !important;
+  min-width: 100vw !important;
+  overflow-x: hidden;
+  background: var(--mimo-paper) !important;
+}
+
+.mimo-mode #content-inner.layout,
+.mimo-mode #content-inner {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#mimo-home {
+  width: 100vw;
+  min-height: 100vh;
+  background: var(--mimo-paper);
+  color: var(--mimo-ink);
+  font-family: "Avenir Next", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", sans-serif;
+  overflow: hidden;
+}
+
+.mimo-hero {
+  --cursor-x: 50%;
+  --cursor-y: 50%;
+  --reveal-size: clamp(260px, 31vw, 450px);
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 84px 24px;
+  overflow: hidden;
+  isolation: isolate;
+  width: 100vw;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.72), transparent 31%),
+    linear-gradient(180deg, #f7f3ec 0%, var(--mimo-paper) 100%);
+  cursor: none;
+}
+
+.mimo-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-bottom: 1px solid var(--mimo-line);
+}
+
+.mimo-word-field {
+  position: absolute;
+  inset: -28px;
+  display: grid;
+  align-content: center;
+  gap: clamp(16px, 2.6vw, 32px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mimo-word-field--base {
+  color: rgba(17, 17, 17, 0.06);
+}
+
+.mimo-word-row {
+  display: flex;
+  justify-content: center;
+  gap: clamp(26px, 4vw, 68px);
+  white-space: nowrap;
+  transform: translateX(var(--shift));
+}
+
+.mimo-glyph {
+  display: inline-grid;
+  place-items: center;
+  min-width: clamp(54px, 6vw, 92px);
+  min-height: clamp(34px, 5vw, 58px);
+  color: inherit;
+  font-size: clamp(28px, 4vw, 58px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  user-select: none;
+}
+
+.mimo-hero-copy {
+  position: relative;
+  z-index: 3;
+  width: min(var(--mimo-width), 100%);
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.mimo-hero-reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at var(--cursor-x) var(--cursor-y), rgba(244, 241, 234, 0.025), rgba(244, 241, 234, 0.01) 62%, rgba(244, 241, 234, 0) 100%),
+    #050505;
+  color: var(--mimo-paper);
+  clip-path: circle(calc(var(--reveal-size) / 2) at var(--cursor-x) var(--cursor-y));
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.mimo-hero.is-revealing .mimo-hero-reveal {
+  opacity: 1;
+}
+
+.mimo-word-field--reveal {
+  color: rgba(244, 241, 234, 0.12);
+}
+
+.mimo-hero-copy--reveal {
+  position: absolute;
+  inset: 0;
+  width: min(var(--mimo-width), 100%);
+}
+
+.mimo-title {
+  margin: 0;
+  max-width: 1120px;
+  color: var(--mimo-ink);
+  font-size: clamp(54px, 7.6vw, 116px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.mimo-hero-copy--reveal .mimo-title {
+  color: var(--mimo-paper);
+}
+
+.mimo-title span {
+  display: block;
+}
+
+.mimo-title-cn {
+  margin: 22px 0 0;
+  color: var(--mimo-paper);
+  font-size: 30px;
+  line-height: 1.35;
+}
+
+.mimo-hero-desc {
+  max-width: 680px;
+  margin: 28px 0 0;
+  color: rgba(244, 241, 234, 0.72);
+  font-size: 18px;
+  line-height: 1.85;
+}
+
+.mimo-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 34px;
+  pointer-events: auto;
+}
+
+.mimo-action {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  border: 1px solid var(--mimo-invert-line);
+  color: var(--mimo-paper) !important;
+  background: rgba(244, 241, 234, 0.04);
+  text-decoration: none !important;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.mimo-action:hover {
+  background: var(--mimo-paper);
+  color: var(--mimo-black) !important;
+}
+
+.mimo-section {
+  width: min(var(--mimo-width), calc(100% - 32px));
+  margin: 0 auto;
+  padding: 94px 0;
+  border-top: 1px solid var(--mimo-line);
+}
+
+.mimo-section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  align-items: baseline;
+  margin-bottom: 34px;
+}
+
+.mimo-section-index {
+  display: none !important;
+}
+
+.mimo-section-head h2 {
+  margin: 0;
+  color: var(--mimo-ink);
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 1.05;
+}
+
+.mimo-about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 56px;
+}
+
+.mimo-about-copy {
+  max-width: 760px;
+}
+
+.mimo-about-copy p {
+  margin: 0 0 22px;
+  color: rgba(17, 17, 17, 0.72);
+  font-size: 19px;
+  line-height: 1.9;
+}
+
+.mimo-stats {
+  border-top: 1px solid var(--mimo-line);
+}
+
+.mimo-stat {
+  min-height: 92px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  border-bottom: 1px solid var(--mimo-line);
+  color: var(--mimo-ink) !important;
+  text-decoration: none !important;
+}
+
+.mimo-stat span {
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.mimo-stat small {
+  color: var(--mimo-muted);
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.mimo-entry-list,
+.mimo-post-list {
+  border-top: 1px solid var(--mimo-line);
+}
+
+.mimo-row-link {
+  min-height: 112px;
+  display: grid;
+  grid-template-columns: 96px minmax(220px, 0.92fr) minmax(260px, 1fr) 36px;
+  gap: 24px;
+  align-items: center;
+  border-bottom: 1px solid var(--mimo-line);
+  color: var(--mimo-ink) !important;
+  text-decoration: none !important;
+  transition: background 180ms ease, padding 180ms ease;
+}
+
+.mimo-row-link:hover {
+  padding-left: 18px;
+  background: rgba(17, 17, 17, 0.045);
+  color: var(--mimo-ink) !important;
+}
+
+.mimo-row-no {
+  color: var(--mimo-muted);
+  font-size: 14px;
+}
+
+.mimo-row-title {
+  color: var(--mimo-ink);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.22;
+}
+
+.mimo-row-desc {
+  color: rgba(17, 17, 17, 0.58);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.mimo-row-arrow {
+  color: var(--mimo-ink);
+  font-size: 24px;
+  text-align: right;
+}
+
+.mimo-contact-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.mimo-contact-line a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 16px;
+  border: 1px solid var(--mimo-line);
+  color: var(--mimo-ink) !important;
+  text-decoration: none !important;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mimo-contact-line a:hover {
+  background: var(--mimo-black);
+  color: var(--mimo-paper) !important;
+}
+
+@media (max-width: 900px) {
+  #page-header #site-title,
+  #page-header .title-seo {
+    font-size: 42px !important;
+  }
+
+  .layout {
+    padding-top: 96px !important;
+  }
+
+  #recent-posts > .recent-post-items > .recent-post-item,
+  #recent-posts > .recent-post-item,
+  .article-sort-item,
+  #tag .article-sort-item,
+  #category .article-sort-item {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .mimo-title {
+    font-size: clamp(48px, 9vw, 76px);
+  }
+
+  .mimo-section-head,
+  .mimo-about-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .mimo-section-head h2 {
+    font-size: 42px;
+  }
+
+  .mimo-row-link {
+    grid-template-columns: 56px minmax(0, 1fr) 28px;
+  }
+
+  .mimo-row-desc {
+    grid-column: 2 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --mimo-nav-height: 58px;
+  }
+
+  #page-header #nav,
+  #page-header.nav-fixed #nav {
+    width: calc(100% - 20px);
+    margin-top: 10px;
+  }
+
+  #page-header #site-info,
+  .layout,
+  .mimo-section {
+    width: calc(100% - 24px) !important;
+  }
+
+  #nav .site-name,
+  #nav .menus_items .menus_item > a {
+    font-size: 12px;
+  }
+
+  #nav .menus_items .menus_item > a {
+    padding: 0 8px;
+  }
+
+  .mimo-hero {
+    --reveal-size: 260px;
+    padding: 68px 14px;
+  }
+
+  .mimo-word-field {
+    gap: 14px;
+  }
+
+  .mimo-word-row {
+    gap: 20px;
+  }
+
+  .mimo-glyph {
+    min-width: 46px;
+    min-height: 30px;
+    font-size: 26px;
+  }
+
+  .mimo-title {
+    max-width: 360px;
+    font-size: 46px;
+    white-space: normal;
+  }
+
+  .mimo-title-cn {
+    font-size: 22px;
+  }
+
+  .mimo-hero-desc,
+  .mimo-about-copy p {
+    font-size: 16px;
+  }
+
+  .mimo-section {
+    padding: 70px 0;
+  }
+
+  .mimo-section-head h2 {
+    font-size: 34px;
+  }
+
+  .mimo-row-link {
+    min-height: 104px;
+    grid-template-columns: 44px minmax(0, 1fr) 22px;
+    gap: 12px;
+  }
+
+  .mimo-row-title {
+    font-size: 21px;
+  }
+
+  .mimo-row-desc {
+    font-size: 14px;
+  }
+
+  #recent-posts .article-title,
+  #recent-posts a.article-title,
+  .article-sort-item-title {
+    font-size: 20px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+]]></content>
+  </entry>
+  <entry>
+    <title>link</title>
+    <url>/link/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>Projects</title>
+    <url>/projects/index.html</url>
+    <content><![CDATA[<h1 id="Projects-项目作品"><a href="#Projects-项目作品" class="headerlink" title="Projects &#x2F; 项目作品"></a>Projects &#x2F; 项目作品</h1><p>这里集中展示我真正投入产品判断、持续迭代并完成工程落地的项目。目前重点展示 PocketLedger。</p>
+<h2 id="PocketLedger-随心记账本"><a href="#PocketLedger-随心记账本" class="headerlink" title="PocketLedger &#x2F; 随心记账本"></a>PocketLedger &#x2F; 随心记账本</h2><blockquote>
+<p><strong>Status:</strong> Active · Open Source<br><strong>Stack:</strong> React · Vite · Electron · Local JSON Storage</p>
+</blockquote>
+<p>PocketLedger 是一个面向大学生的本地优先桌面记账工具。它不要求注册或云同步，重点解决两件事：快速记下一笔收支，以及随时看清这个月的生活费还剩多少。</p>
+<p><a href="https://github.com/XuJinyao0301/pocket-ledger">查看 GitHub 源码</a> · <a href="https://github.com/XuJinyao0301/pocket-ledger/blob/main/PRD.md">阅读产品需求文档</a></p>
+<h3 id="核心能力"><a href="#核心能力" class="headerlink" title="核心能力"></a>核心能力</h3><ul>
+<li>记录支出、收入和转账三类交易。</li>
+<li>管理微信、支付宝、银行卡和现金等账户。</li>
+<li>自定义收入与支出分类。</li>
+<li>汇总本月生活费、已花、剩余、收入、支出和结余。</li>
+<li>按条件筛选和搜索账单，快速回看最近交易。</li>
+<li>展示分类统计、账户支出分布和近 6 个月趋势。</li>
+<li>支持 JSON &#x2F; CSV 导出和 JSON 导入。</li>
+<li>支持账户余额校准并保留校准日志。</li>
+<li>数据默认保存在本地，无需注册登录。</li>
+</ul>
+<h3 id="产品与工程取舍"><a href="#产品与工程取舍" class="headerlink" title="产品与工程取舍"></a>产品与工程取舍</h3><p>第一版没有做账号、云同步和复杂理财功能，而是坚持本地优先、单用户和低操作成本。项目使用 React 与 Vite 构建界面，Electron 提供桌面运行环境，并通过本地 JSON 文件保存数据。</p>
+<p>这个项目从一个模糊想法开始，逐步形成了用户场景、数据模型、首页信息层级、交易流程和验收标准，最后补齐 README、许可证、持续集成和桌面应用构建配置。</p>
+<h3 id="我的角色"><a href="#我的角色" class="headerlink" title="我的角色"></a>我的角色</h3><p>这是一个通过持续对话完成的 vibe coding 项目。我负责定义产品目标、使用场景、体验取舍和验收方向，并持续检查结果是否真正可用；Codex 将这些要求转化为 PRD、界面、代码和工程配置。</p>
+<p>它对我的价值不只是完成一个工具，也让我练习了如何把需求表达清楚、如何控制第一版范围，以及如何依据实际体验继续迭代。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Now</title>
+    <url>/now/index.html</url>
+    <content><![CDATA[<h1 id="Now"><a href="#Now" class="headerlink" title="Now"></a>Now</h1><p>Currently I am:</p>
+<ul>
+<li>learning C++ more systematically</li>
+<li>building stronger CS foundations</li>
+<li>exploring machine learning and future research directions</li>
+<li>improving this blog and writing more consistently</li>
+</ul>
+<hr>
+<p>我最近在：</p>
+<ul>
+<li>系统学习 C++</li>
+<li>打牢计算机基础</li>
+<li>思考未来更适合自己的技术方向</li>
+<li>重构博客并坚持写作</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>About</title>
+    <url>/about/index.html</url>
+    <content><![CDATA[<h1 id="About"><a href="#About" class="headerlink" title="About"></a>About</h1><p>I am an undergraduate student majoring in Network Engineering.</p>
+<p>This blog records my learning process in algorithms, systems, and AI-related engineering practice.</p>
+<p>One current focus is vibe coding: I use natural language to define product goals, user scenarios, experience constraints, and acceptance standards, then collaborate with Codex to turn those ideas into working software.</p>
+<h2 id="Resume"><a href="#Resume" class="headerlink" title="Resume"></a>Resume</h2><div class="orb-resume">
+  <h3>Education</h3>
+  <ul>
+    <li><strong>Wuhan University of Science and Technology</strong> - Network Engineering (2025 - Present)</li>
+    <li>Core coursework: Calculus, Discrete Mathematics, Object-Oriented Programming</li>
+    <li>Research interests: Machine Learning, Computer Vision</li>
+  </ul>
+</div>
+
+<div class="orb-resume">
+  <h3>Selected Project</h3>
+  <ul>
+    <li><strong>PocketLedger / 随心记账本</strong> (React, Vite, Electron)</li>
+    <li>A vibecoding-built, local-first desktop accounting tool for student allowance, accounts, transactions, analytics, and data export</li>
+    <li><strong>HealthyU</strong> (React, Vite, Node.js)</li>
+    <li>Built a health screening platform for assessment and personalized recommendations</li>
+  </ul>
+</div>
+
+<div class="orb-resume">
+  <h3>Vibe Coding Practice</h3>
+  <ul>
+    <li>PocketLedger started from a product conversation, then became a PRD, UI structure, React + Electron codebase, README, CI, and release-ready open-source project.</li>
+    <li>My role in the process is to define the problem, decide what matters, review the output, and keep iterating until the tool is useful rather than just presentable.</li>
+  </ul>
+</div>
+
+<div class="orb-resume">
+  <h3>Skills</h3>
+  <ul>
+    <li>C / C++ / Python / Git</li>
+    <li>Focus areas: engineering fundamentals and long-term technical growth</li>
+  </ul>
+</div>
+
+<hr>
+<p>我是网络工程专业本科生，目前主要关注 C++、计算机基础、机器学习和长期技术成长。</p>
+<p>这个博客用来记录我的学习过程、技术思考和阶段性总结。</p>
+<p>最近我也在实践 vibe coding：用自然语言把产品目标、使用场景、体验取舍和验收标准讲清楚，再和 Codex 协作，把想法推进成真正能运行的软件。</p>
+<h2 id="简历"><a href="#简历" class="headerlink" title="简历"></a>简历</h2><div class="orb-resume">
+  <h3>教育经历</h3>
+  <ul>
+    <li><strong>武汉科技大学</strong> - 网络工程（2025 - 至今）</li>
+    <li>主修课程：高等数学、离散数学、面向对象程序设计</li>
+    <li>研究兴趣：机器学习、计算机视觉</li>
+  </ul>
+</div>
+
+<div class="orb-resume">
+  <h3>精选项目</h3>
+  <ul>
+    <li><strong>PocketLedger / 随心记账本</strong>（React, Vite, Electron）</li>
+    <li>一个通过 vibecoding 做出来的本地优先桌面记账工具，覆盖生活费、账户、收支、统计、导入导出等核心流程</li>
+    <li><strong>HealthyU</strong>（React, Vite, Node.js）</li>
+    <li>实现健康检测流程，提供健康评估与个性化建议</li>
+  </ul>
+</div>
+
+<div class="orb-resume">
+  <h3>Vibe Coding 创作实践</h3>
+  <ul>
+    <li>PocketLedger 从一个产品想法开始，经过 PRD、信息架构、界面设计、React + Electron 实现、README、CI 和 Release 配置，最后收敛成可以继续维护的开源项目。</li>
+    <li>这次创作里，我负责提出问题、判断体验、控制范围和验收方向；Codex 负责把连续对话转化成文档、代码和工程配置。</li>
+  </ul>
+</div>
+
+<div class="orb-resume">
+  <h3>技能与方向</h3>
+  <ul>
+    <li>C / C++ / Python / Git</li>
+    <li>持续强化工程基础、算法能力与项目落地能力</li>
+  </ul>
+</div>
+]]></content>
+  </entry>
+  <entry>
+    <title>Tags</title>
+    <url>/tags/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>Categories</title>
+    <url>/categories/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+</search>

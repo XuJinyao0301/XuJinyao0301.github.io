@@ -242,7 +242,13 @@ a:hover {
 #page h2,
 #post h2,
 #page h3,
-#post h3 {
+#post h3,
+#page h4,
+#post h4,
+#page h5,
+#post h5,
+#page h6,
+#post h6 {
   color: var(--mimo-ink) !important;
   font-family: "Avenir Next", "Helvetica Neue", "PingFang SC", sans-serif;
   font-weight: 600;
@@ -278,6 +284,27 @@ a:hover {
   text-decoration: none;
 }
 
+#post > #post-info #post-meta,
+#post > #post-info #post-meta a {
+  color: rgba(17, 17, 17, 0.68) !important;
+}
+
+#article-container blockquote {
+  border-left-color: var(--mimo-line-strong);
+  background: var(--mimo-paper-soft);
+  color: rgba(17, 17, 17, 0.78);
+}
+
+#article-container blockquote p,
+#article-container blockquote li {
+  color: rgba(17, 17, 17, 0.78);
+}
+
+#article-container :not(pre) > code {
+  background: rgba(17, 17, 17, 0.08);
+  color: #7a2f2a;
+}
+
 #article-container figure.highlight,
 #article-container pre,
 #article-container .highlight {
@@ -295,6 +322,24 @@ a:hover {
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+}
+
+#post .tag_share .post-meta__tags,
+#post .post-copyright .post-copyright-meta {
+  color: var(--mimo-ink) !important;
+}
+
+#post .tag_share .post-meta__tags {
+  border-color: var(--mimo-line-strong) !important;
+}
+
+#post .tag_share .post-meta__tags:hover {
+  background: var(--mimo-ink) !important;
+  color: var(--mimo-paper) !important;
+}
+
+#post .post-copyright::before {
+  color: var(--mimo-ink) !important;
 }
 
 #footer {
