@@ -30,6 +30,32 @@
       </tags>
   </entry>
   <entry>
+    <title>大一上总结</title>
+    <url>/2026/01/19/%E5%A4%A7%E4%B8%80%E4%B8%8A%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h2 id="时间线"><a href="#时间线" class="headerlink" title="时间线"></a>时间线</h2><h3 id="初入大学"><a href="#初入大学" class="headerlink" title="初入大学"></a>初入大学</h3><p>高考失利，我怀着矛盾的心情踏入大学的校门，我既是因为进入这所在高中时期看不上的大学而心高气傲，又因为自己是以较低分数进入这所大学而自卑。<br>一开始，我并不喜欢这里的一切，我始终认为自己应该要站在更高的平台上，但是，经过入学的一系列“洗脑”宣传后，我慢慢接受了自己是这所大学的一份子，<br>开始继续对未来充满希望与憧憬。</p>
+<h3 id="前几个月"><a href="#前几个月" class="headerlink" title="前几个月"></a>前几个月</h3><p>军训完的国庆假期以后，我下定了一个决心：我要每天过得充实，我不要再沉迷游戏。<br>做出这个决定的原因有三个：</p>
+<ol>
+<li><p>我是真的想在本科时期做出一番成绩的；</p>
+</li>
+<li><p>高考完的暑假已经让我有一点“电子阳痿”了；</p>
+</li>
+<li><p>我对游戏的看法发生了改变，以前我对于游戏里的排名十分在意，但现在我只是把它当作与朋友联系的一个方式，自己一个人玩属实没啥意思。</p>
+</li>
+</ol>
+<p>在后面的两个多月，我真的如我所期望的那样，每天都在学习新知识，在学校OJ上刷题，在网上了解自己感兴趣的内容。<br>直到现在回想起来，我仍然感觉那是一段十分励志的经历。连高中同学都感叹：“夸张！”</p>
+<h3 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h3><p>最后还是没忍住啊，可恶，游戏慢慢地下回来了，好像又回到了高考完的暑假。就这样一直到了期末考试，幸好每科考试之间基本都有一两天间隔，我就通过这些间期临时抱佛脚，<br>目前的成绩还没完全出来，但我感觉已经和别人有了一点差距了。</p>
+<h2 id="一些总结感悟"><a href="#一些总结感悟" class="headerlink" title="一些总结感悟"></a>一些总结感悟</h2><p>在学习期间，我产生了一个苦恼的问题：我到底要不要在课下学一些与目前考试无关的知识？ 我对这些知识有着十分浓厚的兴趣，因此会深陷其中，但绩点成绩又在这一头拉着我，<br>我脑海里又想要去复习目前所学。于是最坏的结果发生了，我既没有学新知识，又没有好好认真复习，全扑到游戏里了。。。。</p>
+<p>这小半年的生活，让我稍微摸清了大学学习的门道，在接下来的日子里，我还是要多总结多反思，找到一个学习的平衡点，游戏如果不能完全放下，那至少也要多克制一会，<br>不能占据太多的注意力。</p>
+<p>大一下学期之后，课程就会开始多起来了，同时还有一些科研竞赛之类的活动，要抓紧了。</p>
+]]></content>
+      <categories>
+        <category>Life</category>
+      </categories>
+      <tags>
+        <tag>Summary</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何用hexo搭建一个个人博客</title>
     <url>//blog/how-to-build-a-personal-blog-with-hexo/</url>
     <content><![CDATA[<h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>其实关于博客的搭建我花了不少时间，在网上搜集查找了很多文章，期间还向AI请教了一下，前前后后差不多有两天吧，问题主要出现在了一些文件的配置上，所以借此机会，整理一下自己的经验，希望能帮助到大家。  </p>
@@ -112,23 +138,14 @@
       </tags>
   </entry>
   <entry>
-    <title>大一上总结</title>
-    <url>/2026/01/19/%E5%A4%A7%E4%B8%80%E4%B8%8A%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h2 id="时间线"><a href="#时间线" class="headerlink" title="时间线"></a>时间线</h2><h3 id="初入大学"><a href="#初入大学" class="headerlink" title="初入大学"></a>初入大学</h3><p>高考失利，我怀着矛盾的心情踏入大学的校门，我既是因为进入这所在高中时期看不上的大学而心高气傲，又因为自己是以较低分数进入这所大学而自卑。<br>一开始，我并不喜欢这里的一切，我始终认为自己应该要站在更高的平台上，但是，经过入学的一系列“洗脑”宣传后，我慢慢接受了自己是这所大学的一份子，<br>开始继续对未来充满希望与憧憬。</p>
-<h3 id="前几个月"><a href="#前几个月" class="headerlink" title="前几个月"></a>前几个月</h3><p>军训完的国庆假期以后，我下定了一个决心：我要每天过得充实，我不要再沉迷游戏。<br>做出这个决定的原因有三个：</p>
-<ol>
-<li><p>我是真的想在本科时期做出一番成绩的；</p>
-</li>
-<li><p>高考完的暑假已经让我有一点“电子阳痿”了；</p>
-</li>
-<li><p>我对游戏的看法发生了改变，以前我对于游戏里的排名十分在意，但现在我只是把它当作与朋友联系的一个方式，自己一个人玩属实没啥意思。</p>
-</li>
-</ol>
-<p>在后面的两个多月，我真的如我所期望的那样，每天都在学习新知识，在学校OJ上刷题，在网上了解自己感兴趣的内容。<br>直到现在回想起来，我仍然感觉那是一段十分励志的经历。连高中同学都感叹：“夸张！”</p>
-<h3 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h3><p>最后还是没忍住啊，可恶，游戏慢慢地下回来了，好像又回到了高考完的暑假。就这样一直到了期末考试，幸好每科考试之间基本都有一两天间隔，我就通过这些间期临时抱佛脚，<br>目前的成绩还没完全出来，但我感觉已经和别人有了一点差距了。</p>
-<h2 id="一些总结感悟"><a href="#一些总结感悟" class="headerlink" title="一些总结感悟"></a>一些总结感悟</h2><p>在学习期间，我产生了一个苦恼的问题：我到底要不要在课下学一些与目前考试无关的知识？ 我对这些知识有着十分浓厚的兴趣，因此会深陷其中，但绩点成绩又在这一头拉着我，<br>我脑海里又想要去复习目前所学。于是最坏的结果发生了，我既没有学新知识，又没有好好认真复习，全扑到游戏里了。。。。</p>
-<p>这小半年的生活，让我稍微摸清了大学学习的门道，在接下来的日子里，我还是要多总结多反思，找到一个学习的平衡点，游戏如果不能完全放下，那至少也要多克制一会，<br>不能占据太多的注意力。</p>
-<p>大一下学期之后，课程就会开始多起来了，同时还有一些科研竞赛之类的活动，要抓紧了。</p>
+    <title>碎碎念</title>
+    <url>/2026/10/10/%E7%A2%8E%E7%A2%8E%E5%BF%B5/</url>
+    <content><![CDATA[<p>明天就是我第一次多雅思考试了，国庆这十天基本都在上雅思一对一的路上，从学校到中南路的路走了十几遍，从陌生到现在的了如指掌。每次回学校的路上，吹着傍晚的风，我常思考自己的未来会是什么样的，也会焦虑当下。人们常说认知的巨人，行动的矮子，我想我大抵也是这样的人吧。沉没成本，复利……我似乎知道的东西远要比身边的人多得多，我也清楚，在如今的世界，怎么做才是最容易完成所谓世俗的成功。但是我总是难以付出行动，我总是担心走错每一步，或是害怕失败，是的，从小到大我都是这样，我讨厌失败的自己，这大概也是为什么每次考试我都发挥的不算太好，不论是初中的预录还是高考，现在也是，我害怕我的雅思考试不能考到如我所想的分数，哪怕是最低标准的6.5我都不敢保证。</p>
+<p>今天回到寝室的时候，我用ChatGPT又学习备考了一会，但是不知道是不是压力太大还是长时间盯着屏幕，我的睡意笼罩着我，虽然才八点。在询问GPT后，我打算直接睡一会，可是舍友打游戏的声音太大了，我在床上躺了十分钟就又下来了，睡意全无。然后我刷了会抖音，可能是抖音后台知道我马上要考试了，关于雅思的内容一个接着一个，每看到一个自己不太熟练的口语或者写作话题我就忍不住焦虑起来。加上今天不知为什么BC的雅思考试全国取消，尽管我报的是IDP，我还是担心这可能会影响我明天的考试。</p>
+<p>其实很早就想专门建一个栏目来收集我的碎碎念了，每次刷视频或是看到特定的东西都会激发我的创作欲，又或者说我的无病呻吟。这里我想到一句诗叫做“少年不知愁滋味，为赋新词强说愁”<br>我确实是这样的，社会上经历得太少了，脑子里想得又太多了。</p>
+<p>这次国庆，我选择留校备考雅思，打开朋友圈和QQ动态发现同学国庆都过得很好，有结伴去川西感受大自然的，也有表白成功享受恋爱甜蜜的，我对这些说不上羡慕，只是觉得好像他们过的才是真正的大学生活，那样才是我想象中的青春。而我的呢，为了自己设想的未来牺牲如此宝贵的年华，我想，或许这也是一种人生，在世俗成功与自由里，总得选一个去牺牲吧。我总是安慰自己这样，或许在大学四年好好按照规划来进行才能弥补过去因为失败产生的差距。我就是这样一个害怕失败到骨子里的人，大概是好胜心太强，或者脸皮太薄了吧，见不得自己比别人差。</p>
+<p>我觉得自己和身边的人相比也比较幸运，我的父母在当地县城里应该算得上优秀，家里衣食无忧，县城的日子过得可以说是滋润了。他们也比我认识的一些家长要开明，至少在高中听到我以后想要出国时，他们没有立刻否定我的想法，而是和我沟通探讨，甚至还很正式地给我写过信，虽然我常说他们的认知太低，但这也是大多数父母的特点，和时代也有关系，好的是他们也在努力改变，尝试接受那些以前抗拒的事物，比如他们之前连申请留学这种都不知道，现在也对此有个大概的认识了。我很感动的一点是他们很尊重我的任何想法，无论是刚才提到的留学还是提前进组开始科研，他们也会利用能找到的人脉资源来帮助我，这大概也是我为什么有信心如何按照自己的规划，一定可以成功的原因。</p>
+<p>不知不觉写了半个小时了，现在已经23:13了，晚安，希望明天的考试可以顺利，不出差错，好好发挥！！！</p>
 ]]></content>
       <categories>
         <category>Life</category>
@@ -164,23 +181,6 @@
       </categories>
       <tags>
         <tag>随笔</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>碎碎念</title>
-    <url>/2026/10/10/%E7%A2%8E%E7%A2%8E%E5%BF%B5/</url>
-    <content><![CDATA[<p>明天就是我第一次多雅思考试了，国庆这十天基本都在上雅思一对一的路上，从学校到中南路的路走了十几遍，从陌生到现在的了如指掌。每次回学校的路上，吹着傍晚的风，我常思考自己的未来会是什么样的，也会焦虑当下。人们常说认知的巨人，行动的矮子，我想我大抵也是这样的人吧。沉没成本，复利……我似乎知道的东西远要比身边的人多得多，我也清楚，在如今的世界，怎么做才是最容易完成所谓世俗的成功。但是我总是难以付出行动，我总是担心走错每一步，或是害怕失败，是的，从小到大我都是这样，我讨厌失败的自己，这大概也是为什么每次考试我都发挥的不算太好，不论是初中的预录还是高考，现在也是，我害怕我的雅思考试不能考到如我所想的分数，哪怕是最低标准的6.5我都不敢保证。</p>
-<p>今天回到寝室的时候，我用ChatGPT又学习备考了一会，但是不知道是不是压力太大还是长时间盯着屏幕，我的睡意笼罩着我，虽然才八点。在询问GPT后，我打算直接睡一会，可是舍友打游戏的声音太大了，我在床上躺了十分钟就又下来了，睡意全无。然后我刷了会抖音，可能是抖音后台知道我马上要考试了，关于雅思的内容一个接着一个，每看到一个自己不太熟练的口语或者写作话题我就忍不住焦虑起来。加上今天不知为什么BC的雅思考试全国取消，尽管我报的是IDP，我还是担心这可能会影响我明天的考试。</p>
-<p>其实很早就想专门建一个栏目来收集我的碎碎念了，每次刷视频或是看到特定的东西都会激发我的创作欲，又或者说我的无病呻吟。这里我想到一句诗叫做“少年不知愁滋味，为赋新词强说愁”<br>我确实是这样的，社会上经历得太少了，脑子里想得又太多了。</p>
-<p>这次国庆，我选择留校备考雅思，打开朋友圈和QQ动态发现同学国庆都过得很好，有结伴去川西感受大自然的，也有表白成功享受恋爱甜蜜的，我对这些说不上羡慕，只是觉得好像他们过的才是真正的大学生活，那样才是我想象中的青春。而我的呢，为了自己设想的未来牺牲如此宝贵的年华，我想，或许这也是一种人生，在世俗成功与自由里，总得选一个去牺牲吧。我总是安慰自己这样，或许在大学四年好好按照规划来进行才能弥补过去因为失败产生的差距。我就是这样一个害怕失败到骨子里的人，大概是好胜心太强，或者脸皮太薄了吧，见不得自己比别人差。</p>
-<p>我觉得自己和身边的人相比也比较幸运，我的父母在当地县城里应该算得上优秀，家里衣食无忧，县城的日子过得可以说是滋润了。他们也比我认识的一些家长要开明，至少在高中听到我以后想要出国时，他们没有立刻否定我的想法，而是和我沟通探讨，甚至还很正式地给我写过信，虽然我常说他们的认知太低，但这也是大多数父母的特点，和时代也有关系，好的是他们也在努力改变，尝试接受那些以前抗拒的事物，比如他们之前连申请留学这种都不知道，现在也对此有个大概的认识了。我很感动的一点是他们很尊重我的任何想法，无论是刚才提到的留学还是提前进组开始科研，他们也会利用能找到的人脉资源来帮助我，这大概也是我为什么有信心如何按照自己的规划，一定可以成功的原因。</p>
-<p>不知不觉写了半个小时了，现在已经23:13了，晚安，希望明天的考试可以顺利，不出差错，好好发挥！！！</p>
-]]></content>
-      <categories>
-        <category>Life</category>
-      </categories>
-      <tags>
-        <tag>Summary</tag>
       </tags>
   </entry>
   <entry>
@@ -1182,44 +1182,30 @@ a:hover {
 ]]></content>
   </entry>
   <entry>
+    <title>关于</title>
+    <url>/about/index.html</url>
+    <content><![CDATA[<p>我是Charles，现在是一名本科生。这里主要记录一些随笔和学习经验分享。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>Categories</title>
     <url>/categories/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>link</title>
-    <url>/link/index.html</url>
+    <title>Tags</title>
+    <url>/tags/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>Projects</title>
+    <title>研究方向</title>
     <url>/projects/index.html</url>
-    <content><![CDATA[<h1 id="Projects-项目作品"><a href="#Projects-项目作品" class="headerlink" title="Projects &#x2F; 项目作品"></a>Projects &#x2F; 项目作品</h1><p>这里集中展示我真正投入产品判断、持续迭代并完成工程落地的项目。目前重点展示 PocketLedger。</p>
-<h2 id="PocketLedger-随心记账本"><a href="#PocketLedger-随心记账本" class="headerlink" title="PocketLedger &#x2F; 随心记账本"></a>PocketLedger &#x2F; 随心记账本</h2><blockquote>
-<p><strong>Status:</strong> Active · Open Source<br><strong>Stack:</strong> React · Vite · Electron · Local JSON Storage</p>
-</blockquote>
-<p>PocketLedger 是一个面向大学生的本地优先桌面记账工具。它不要求注册或云同步，重点解决两件事：快速记下一笔收支，以及随时看清这个月的生活费还剩多少。</p>
-<p><a href="https://github.com/XuJinyao0301/pocket-ledger">查看 GitHub 源码</a> · <a href="https://github.com/XuJinyao0301/pocket-ledger/blob/main/PRD.md">阅读产品需求文档</a></p>
-<h3 id="核心能力"><a href="#核心能力" class="headerlink" title="核心能力"></a>核心能力</h3><ul>
-<li>记录支出、收入和转账三类交易。</li>
-<li>管理微信、支付宝、银行卡和现金等账户。</li>
-<li>自定义收入与支出分类。</li>
-<li>汇总本月生活费、已花、剩余、收入、支出和结余。</li>
-<li>按条件筛选和搜索账单，快速回看最近交易。</li>
-<li>展示分类统计、账户支出分布和近 6 个月趋势。</li>
-<li>支持 JSON &#x2F; CSV 导出和 JSON 导入。</li>
-<li>支持账户余额校准并保留校准日志。</li>
-<li>数据默认保存在本地，无需注册登录。</li>
-</ul>
-<h3 id="产品与工程取舍"><a href="#产品与工程取舍" class="headerlink" title="产品与工程取舍"></a>产品与工程取舍</h3><p>第一版没有做账号、云同步和复杂理财功能，而是坚持本地优先、单用户和低操作成本。项目使用 React 与 Vite 构建界面，Electron 提供桌面运行环境，并通过本地 JSON 文件保存数据。</p>
-<p>这个项目从一个模糊想法开始，逐步形成了用户场景、数据模型、首页信息层级、交易流程和验收标准，最后补齐 README、许可证、持续集成和桌面应用构建配置。</p>
-<h3 id="我的角色"><a href="#我的角色" class="headerlink" title="我的角色"></a>我的角色</h3><p>这是一个通过持续对话完成的 vibe coding 项目。我负责定义产品目标、使用场景、体验取舍和验收方向，并持续检查结果是否真正可用；Codex 将这些要求转化为 PRD、界面、代码和工程配置。</p>
-<p>它对我的价值不只是完成一个工具，也让我练习了如何把需求表达清楚、如何控制第一版范围，以及如何依据实际体验继续迭代。</p>
+    <content><![CDATA[<p>目前关注计算机视觉与Talking Head Generation。</p>
 ]]></content>
   </entry>
   <entry>
-    <title>Tags</title>
-    <url>/tags/index.html</url>
+    <title>link</title>
+    <url>/link/index.html</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
@@ -1240,87 +1226,6 @@ a:hover {
 <li>思考未来更适合自己的技术方向</li>
 <li>重构博客并坚持写作</li>
 </ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>About</title>
-    <url>/about/index.html</url>
-    <content><![CDATA[<h1 id="About"><a href="#About" class="headerlink" title="About"></a>About</h1><p>I am an undergraduate student majoring in Network Engineering.</p>
-<p>This blog records my learning process in algorithms, systems, and AI-related engineering practice.</p>
-<p>One current focus is vibe coding: I use natural language to define product goals, user scenarios, experience constraints, and acceptance standards, then collaborate with Codex to turn those ideas into working software.</p>
-<h2 id="Resume"><a href="#Resume" class="headerlink" title="Resume"></a>Resume</h2><div class="orb-resume">
-  <h3>Education</h3>
-  <ul>
-    <li><strong>Wuhan University of Science and Technology</strong> - Network Engineering (2025 - Present)</li>
-    <li>Core coursework: Calculus, Discrete Mathematics, Object-Oriented Programming</li>
-    <li>Research interests: Machine Learning, Computer Vision</li>
-  </ul>
-</div>
-
-<div class="orb-resume">
-  <h3>Selected Project</h3>
-  <ul>
-    <li><strong>PocketLedger / 随心记账本</strong> (React, Vite, Electron)</li>
-    <li>A vibecoding-built, local-first desktop accounting tool for student allowance, accounts, transactions, analytics, and data export</li>
-    <li><strong>HealthyU</strong> (React, Vite, Node.js)</li>
-    <li>Built a health screening platform for assessment and personalized recommendations</li>
-  </ul>
-</div>
-
-<div class="orb-resume">
-  <h3>Vibe Coding Practice</h3>
-  <ul>
-    <li>PocketLedger started from a product conversation, then became a PRD, UI structure, React + Electron codebase, README, CI, and release-ready open-source project.</li>
-    <li>My role in the process is to define the problem, decide what matters, review the output, and keep iterating until the tool is useful rather than just presentable.</li>
-  </ul>
-</div>
-
-<div class="orb-resume">
-  <h3>Skills</h3>
-  <ul>
-    <li>C / C++ / Python / Git</li>
-    <li>Focus areas: engineering fundamentals and long-term technical growth</li>
-  </ul>
-</div>
-
-<hr>
-<p>我是网络工程专业本科生，目前主要关注 C++、计算机基础、机器学习和长期技术成长。</p>
-<p>这个博客用来记录我的学习过程、技术思考和阶段性总结。</p>
-<p>最近我也在实践 vibe coding：用自然语言把产品目标、使用场景、体验取舍和验收标准讲清楚，再和 Codex 协作，把想法推进成真正能运行的软件。</p>
-<h2 id="简历"><a href="#简历" class="headerlink" title="简历"></a>简历</h2><div class="orb-resume">
-  <h3>教育经历</h3>
-  <ul>
-    <li><strong>武汉科技大学</strong> - 网络工程（2025 - 至今）</li>
-    <li>主修课程：高等数学、离散数学、面向对象程序设计</li>
-    <li>研究兴趣：机器学习、计算机视觉</li>
-  </ul>
-</div>
-
-<div class="orb-resume">
-  <h3>精选项目</h3>
-  <ul>
-    <li><strong>PocketLedger / 随心记账本</strong>（React, Vite, Electron）</li>
-    <li>一个通过 vibecoding 做出来的本地优先桌面记账工具，覆盖生活费、账户、收支、统计、导入导出等核心流程</li>
-    <li><strong>HealthyU</strong>（React, Vite, Node.js）</li>
-    <li>实现健康检测流程，提供健康评估与个性化建议</li>
-  </ul>
-</div>
-
-<div class="orb-resume">
-  <h3>Vibe Coding 创作实践</h3>
-  <ul>
-    <li>PocketLedger 从一个产品想法开始，经过 PRD、信息架构、界面设计、React + Electron 实现、README、CI 和 Release 配置，最后收敛成可以继续维护的开源项目。</li>
-    <li>这次创作里，我负责提出问题、判断体验、控制范围和验收方向；Codex 负责把连续对话转化成文档、代码和工程配置。</li>
-  </ul>
-</div>
-
-<div class="orb-resume">
-  <h3>技能与方向</h3>
-  <ul>
-    <li>C / C++ / Python / Git</li>
-    <li>持续强化工程基础、算法能力与项目落地能力</li>
-  </ul>
-</div>
 ]]></content>
   </entry>
 </search>
