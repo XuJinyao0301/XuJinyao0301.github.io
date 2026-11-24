@@ -178,7 +178,7 @@ button { font: inherit; }
   border-bottom: 1px solid var(--rule);
   padding-bottom: 0.75rem;
 }
-.section-head h2 {
+.section-head h2, .profile-section h2 {
   margin: 0;
   font: 400 clamp(1.9rem, 3.4vw, 3.2rem)/1.2 var(--serif);
   letter-spacing: -0.055em;
@@ -290,6 +290,33 @@ button { font: inherit; }
 }
 .empty { color: var(--quiet); }
 
+.profile-sections {
+  width: min(82rem, calc(100% - 2 * var(--gutter)));
+  margin: 0 auto clamp(2.75rem, 6vw, 6rem);
+}
+
+.profile-section {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1fr) minmax(0, 2.35fr);
+  align-items: baseline;
+  gap: clamp(1.25rem, 5vw, 5rem);
+  padding: clamp(1.65rem, 4vw, 3.4rem) 0;
+  border-top: 1px solid var(--rule);
+  scroll-margin-top: calc(var(--masthead-size) + 0.5rem);
+}
+
+.profile-copy {
+  min-width: 0;
+  max-width: 42rem;
+  font-size: clamp(1rem, 1.26vw, 1.125rem);
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+.profile-copy > :first-child { margin-top: 0; }
+.profile-copy > :last-child { margin-bottom: 0; }
+.profile-copy a { text-decoration: underline; text-underline-offset: 0.18em; }
+
 .colophon {
   margin-inline: var(--gutter);
   min-height: 6rem;
@@ -311,6 +338,7 @@ button { font: inherit; }
   .article-wall.is-drifting:not(:has(.posts:focus-within)) [data-wall-mount] { height: clamp(25rem, 64svh, 34rem); }
   .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem; }
   .post-card { min-height: 8rem; }
+  .profile-section { grid-template-columns: 1fr; gap: 0.8rem; }
   .colophon nav { gap: clamp(0.65rem, 3vw, 1.25rem); }
 }
 
