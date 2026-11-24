@@ -317,6 +317,15 @@ button { font: inherit; }
 .profile-copy > :last-child { margin-bottom: 0; }
 .profile-copy a { text-decoration: underline; text-underline-offset: 0.18em; }
 
+.profile-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.3rem;
+  margin-top: 0.85rem;
+  font-size: 0.9rem;
+  color: var(--quiet);
+}
+
 .colophon {
   margin-inline: var(--gutter);
   min-height: 6rem;
@@ -347,6 +356,7 @@ button { font: inherit; }
 }
 
 @media (max-width: 360px) {
+  .masthead { overflow-x: clip; }
   .index-link { font-size: 0.8rem; }
   .post-meta { font-size: 0.6875rem; }
 }
