@@ -197,6 +197,77 @@ button { font: inherit; }
 }
 .wall-toggle:hover { color: var(--ink); background: #eeece6; }
 
+.article-filters {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  padding-block: 0.7rem 0.25rem;
+  font-size: 0.875rem;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--quiet);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 180ms, border-color 180ms, color 180ms;
+}
+.filter-chip:hover { color: var(--ink); background: #eeece6; }
+.filter-chip[aria-current], .filter-chip[data-active] {
+  border-color: var(--ink);
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.tag-filter { position: relative; }
+.tag-filter summary { list-style: none; }
+.tag-filter summary::-webkit-details-marker { display: none; }
+.tag-filter summary::after {
+  content: "";
+  width: 0.32rem;
+  height: 0.32rem;
+  border: solid currentColor;
+  border-width: 0 1px 1px 0;
+  transform: translateY(-0.11rem) rotate(45deg);
+}
+.tag-filter[open] summary::after { transform: translateY(0.08rem) rotate(225deg); }
+
+.tag-filter-options {
+  position: absolute;
+  inset: calc(100% + 0.35rem) 0 auto auto;
+  z-index: 1;
+  display: grid;
+  gap: 0.12rem;
+  width: max-content;
+  min-width: 7rem;
+  max-width: min(14rem, 82vw);
+  margin: 0;
+  padding: 0.3rem;
+  list-style: none;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 0.65rem;
+  box-shadow: 0 0.4rem 1.25rem rgb(45 38 22 / 0.12);
+}
+.tag-filter-options a {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 0.38rem;
+  overflow-wrap: anywhere;
+}
+.tag-filter-options a:hover, .tag-filter-options a[aria-current] { background: #eeece6; }
+
 .article-wall { position: relative; }
 .article-wall [data-wall-mount] { display: none; }
 .article-wall.is-drifting:not(:has(.posts:focus-within)) [data-wall-mount] {
